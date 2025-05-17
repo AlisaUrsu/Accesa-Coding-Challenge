@@ -1,9 +1,6 @@
 package com.example.PriceComparator.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -16,6 +13,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@IdClass(StoreProductKey.class)
 public class StoreProduct {
     @Id
     @ManyToOne
@@ -29,6 +27,8 @@ public class StoreProduct {
     private LocalDate date;
 
     private BigDecimal price;
+
     private String currency;
+
     private BigDecimal pricePerUnit;
 }
