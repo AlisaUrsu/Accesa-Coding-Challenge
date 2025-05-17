@@ -1,0 +1,21 @@
+﻿product_id,product_name,brand,package_quantity,package_unit,product_category,from_date,to_date,percentage_of_discount
+P001,lapte zuzu,Zuzu,1,l,lactate,01-05-25,07-05-25,10
+P008,brânză telemea,Pilos,0.3,kg,lactate,01-05-25,07-05-25,15
+P020,spaghetti nr.5,Barilla,500,g,paste făinoase,03-05-25,09-05-25,20
+P034,cafea măcinată,Davidoff,0.25,kg,cafea,04-05-25,10-05-25,12
+P011,pâine albă,Lidl,500,g,panificație,02-05-25,08-05-25,5
+P014,roșii cherry,Lidl,250,g,legume și fructe,02-05-25,08-05-25,8
+P037,detergent lichid,Persil,2.5,l,produse de menaj,06-05-25,12-05-25,25
+P040,șampon păr gras,Head & Shoulders,400,ml,îngrijire personală,05-05-25,11-05-25,15
+P049,vin alb demisec,Jidvei,0.75,l,băuturi,01-05-25,07-05-25,10
+P052,ciocolată neagră 70%,Fin Carre,100,g,gustări,03-05-25,09-05-25,18
+P024,apă plată,Aqua Carpatica,2,l,băuturi,01-05-25,07-05-25,5
+P005,ouă mărimea M,Lidl,10,buc,ouă,04-05-25,10-05-25,7
+P017,piept pui,Lidl,1,kg,carne,02-05-25,08-05-25,6
+P028,ulei floarea-soarelui,Bunica,1,l,alimente de bază,05-05-25,11-05-25,10
+P046,piper negru măcinat,Kotanyi,50,g,condimente,06-05-25,12-05-25,12
+P031,biscuiți cu unt,Deluxe,0.2,kg,gustări,04-05-25,10-05-25,9
+P043,hârtie igienică 3 straturi,Zewa,10,role,produse de menaj,03-05-25,09-05-25,14
+P026,banane,Lidl,1,kg,legume și fructe,06-05-25,12-05-25,6
+P002,iaurt grecesc,Lidl,0.4,kg,lactate,05-05-25,11-05-25,11
+P014,roșii cherry,Lidl,250,g,legume și fructe,06-05-25,12-05-25,5
