@@ -1,5 +1,6 @@
 package com.example.PriceComparator.controller;
 
+import com.example.PriceComparator.aop.DiscountQueryParams;
 import com.example.PriceComparator.model.Discount;
 import com.example.PriceComparator.service.DiscountService;
 import com.example.PriceComparator.utils.Result;

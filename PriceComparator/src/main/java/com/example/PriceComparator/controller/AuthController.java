@@ -1,6 +1,7 @@
 package com.example.PriceComparator.controller;
 
 import com.example.PriceComparator.config.SecurityUser;
+import com.example.PriceComparator.model.Store;
 import com.example.PriceComparator.model.User;
 import com.example.PriceComparator.service.UserService;
 import com.example.PriceComparator.utils.Result;
@@ -18,6 +19,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -56,4 +59,5 @@ public class AuthController {
         var user = userDtoConverter.createFromEntity(userService.getUserByUsername(username));
         return new Result<>(true, HttpStatus.OK.value(), "Retrieved currently logged in user.", user);
     }
+
 }
