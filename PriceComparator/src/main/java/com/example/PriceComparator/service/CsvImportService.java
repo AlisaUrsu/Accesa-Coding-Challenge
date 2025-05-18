@@ -162,18 +162,29 @@ public class CsvImportService {
 
                 discountHistoryRepository.save(discountHistory);
 
-                // Remove overlapping active discounts
-                discountRepository.deleteByStoreProductAndDateOverlap(storeProduct, fromDate, toDate);
+                Optional<Discount> existingDiscount = discountRepository.findByStoreProduct(storeProduct);
 
-                // Save current/active discount
-                Discount discount = Discount.builder()
-                        .storeProduct(storeProduct)
-                        .fromDate(fromDate)
-                        .toDate(toDate)
-                        .percentage(percentage)
-                        .build();
+                if (existingDiscount.isEmpty()) {
+                    Discount newDiscount = Discount.builder()
+                            .storeProduct(storeProduct)
+                            .date(importDate)
+                            .fromDate(fromDate)
+                            .toDate(toDate)
+                            .percentage(percentage)
+                            .build();
 
-                discountRepository.save(discount);
+                    discountRepository.save(newDiscount);
+                } else {
+                    Discount discount = existingDiscount.get();
+                    if (importDate.isAfter(discount.getDate())) {
+                       discount.setDate(importDate);
+                       discount.setFromDate(fromDate);
+                       discount.setToDate(toDate);
+                       discount.setPercentage(percentage);
+                        discountRepository.save(discount);
+                    }
+                }
+
             }
         } catch (CsvValidationException e) {
             throw new RuntimeException(e);

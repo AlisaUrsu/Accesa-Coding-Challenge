@@ -27,5 +27,5 @@ public class DiscountHistory {
 
     BigDecimal percentage;
 
-
+    LocalDate date;
 }

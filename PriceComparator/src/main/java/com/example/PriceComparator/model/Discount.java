@@ -26,4 +26,6 @@ public class Discount {
     LocalDate toDate;
 
     BigDecimal percentage;
+
+    LocalDate date;
 }

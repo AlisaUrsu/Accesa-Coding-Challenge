@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Hidden
@@ -29,4 +30,5 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
             @Param("toDate") LocalDate toDate
     );
 
+    Optional<Discount> findByStoreProduct(StoreProduct storeProduct);
 }
