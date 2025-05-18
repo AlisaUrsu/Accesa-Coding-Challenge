@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -26,6 +27,8 @@ public class CsvImportService {
     private StoreProductRepository storeProductRepository;
     private UnitRepository unitRepository;
     private PriceHistoryRepository priceHistoryRepository;
+    private DiscountRepository discountRepository;
+    private DiscountHistoryRepository discountHistoryRepository;
 
     public void importCsv(String storeName, LocalDate localDate, InputStream csvStream) throws IOException {
         // Get or create a new store if not present in the database
@@ -120,6 +123,57 @@ public class CsvImportService {
                         storeProductRepository.save(storeProduct);
                     }
                 }
+            }
+        } catch (CsvValidationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void importDiscountCsv(String storeName, LocalDate importDate, InputStream csvStream) throws IOException {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yy");
+
+        // Store has to exist firstly
+        Store store = storeRepository.findByName(storeName)
+                .orElseThrow(() -> new IllegalArgumentException("Store not found: " + storeName));
+
+        try (CSVReader reader = new CSVReader(new InputStreamReader(csvStream))) {
+            reader.readNext(); // skip header
+
+            String[] row;
+            while ((row = reader.readNext()) != null) {
+                String productId = row[0];
+                LocalDate fromDate = LocalDate.parse(row[6], dateTimeFormatter);
+                LocalDate toDate = LocalDate.parse(row[7], dateTimeFormatter);
+                BigDecimal percentage = new BigDecimal(row[8]);
+
+                Product product = productRepository.findById(productId)
+                        .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productId));
+
+                StoreProduct storeProduct = storeProductRepository.findByStoreAndProduct(store, product)
+                        .orElseThrow(() -> new IllegalStateException("StoreProduct not found for product " + productId + " in store " + storeName));
+
+
+                DiscountHistory discountHistory = DiscountHistory.builder()
+                        .storeProduct(storeProduct)
+                        .fromDate(fromDate)
+                        .toDate(toDate)
+                        .percentage(percentage)
+                        .build();
+
+                discountHistoryRepository.save(discountHistory);
+
+                // Remove overlapping active discounts
+                discountRepository.deleteByStoreProductAndDateOverlap(storeProduct, fromDate, toDate);
+
+                // Save current/active discount
+                Discount discount = Discount.builder()
+                        .storeProduct(storeProduct)
+                        .fromDate(fromDate)
+                        .toDate(toDate)
+                        .percentage(percentage)
+                        .build();
+
+                discountRepository.save(discount);
             }
         } catch (CsvValidationException e) {
             throw new RuntimeException(e);

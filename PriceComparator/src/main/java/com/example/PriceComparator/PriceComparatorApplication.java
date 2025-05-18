@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableAsync
-public class PriceComparatorApplication  {
+public class PriceComparatorApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PriceComparatorApplication.class, args);
 	}
