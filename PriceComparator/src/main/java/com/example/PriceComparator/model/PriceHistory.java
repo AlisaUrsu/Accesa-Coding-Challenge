@@ -7,14 +7,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "storeProducts")
+@Table(name = "price_history")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@IdClass(StoreProductKey.class)
-public class StoreProduct {
+@IdClass(PriceHistoryKey.class)
+public class PriceHistory {
     @Id
     @ManyToOne
     private Store store;
@@ -23,6 +23,7 @@ public class StoreProduct {
     @ManyToOne
     private Product product;
 
+    @Id
     private LocalDate date;
 
     private BigDecimal price;

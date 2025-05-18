@@ -3,6 +3,8 @@ package com.example.PriceComparator.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "units")
 @Getter
@@ -17,7 +19,8 @@ public class Unit {
 
     private String name;
 
-    private String baseUnit;
+    private String standardUnit;
 
-    private int conversionFactor;
+    @Column(precision = 10, scale = 3)
+    private BigDecimal conversionFactor;
 }
