@@ -10,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +26,19 @@ public class DiscountController {
 
     @GetMapping("/best")
     public Result<List<DiscountDto>> getBestDiscounts() {
-        List<Discount> discounts = discountService.getBestDiscounts();
-        var discountsDto = discounts.stream()
+        var discountsDto = discountService.getBestDiscounts().stream()
                 .map(discountDtoConverter::createFromEntity)
                 .toList();
         return new Result<>(true, HttpStatus.OK.value(), "Retrieved all discounted products based on the best " +
                 "discounts.", discountsDto);
+    }
+
+    @GetMapping("/new")
+    public Result<List<DiscountDto>> getNewDiscounts(@RequestParam(defaultValue = "1") int days) {
+        LocalDate since = LocalDate.now().minusDays(days);
+        var discountsDto = discountService.getNewDiscounts(since).stream()
+                .map(discountDtoConverter::createFromEntity)
+                .toList();
+        return new Result<>(true, HttpStatus.OK.value(), "Retrieved newly added discounts.", discountsDto);
     }
 }

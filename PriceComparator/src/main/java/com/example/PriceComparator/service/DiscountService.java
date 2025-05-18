@@ -5,6 +5,7 @@ import com.example.PriceComparator.repository.DiscountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -15,4 +16,6 @@ public class DiscountService {
     public List<Discount> getBestDiscounts() {
         return discountRepository.findTopByOrderByDiscountPercentageDesc();
     }
+
+    public List<Discount> getNewDiscounts(LocalDate date) {return discountRepository.findByFromDateAfter(date); }
 }
