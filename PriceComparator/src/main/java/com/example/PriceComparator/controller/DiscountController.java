@@ -5,6 +5,7 @@ import com.example.PriceComparator.service.DiscountService;
 import com.example.PriceComparator.utils.Result;
 import com.example.PriceComparator.utils.converter.DiscountDtoConverter;
 import com.example.PriceComparator.utils.dto.DiscountDto;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/discounts")
+@SecurityRequirement(name = "basicAuth")
 public class DiscountController {
     private final DiscountService discountService;
     private final DiscountDtoConverter discountDtoConverter;
