@@ -40,4 +40,5 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
     Optional<Discount> findFirstByStoreProductAndFromDateLessThanEqualAndToDateGreaterThanEqualOrderByFromDateDesc(
             StoreProduct storeProduct, LocalDate from, LocalDate to
     );
+
 }
