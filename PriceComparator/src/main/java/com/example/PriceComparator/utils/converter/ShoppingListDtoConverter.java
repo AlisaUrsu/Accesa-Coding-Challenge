@@ -18,7 +18,8 @@ public class ShoppingListDtoConverter implements Converter<ShoppingList, Shoppin
         return new ShoppingListDto(
                 entity.getStore().getName(),
                 entity.getName(),
-                items
+                items,
+                entity.getTotalPrice()
         );
     }
 

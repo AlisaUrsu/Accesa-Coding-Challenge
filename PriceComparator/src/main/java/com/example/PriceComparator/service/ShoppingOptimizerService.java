@@ -48,10 +48,13 @@ public class ShoppingOptimizerService {
                 }
             }
 
+            BigDecimal finalPrice = bestPrice.multiply(BigDecimal.valueOf(basketItem.quantity()));
+
+
             Store store = best.getStore();
             ShoppingListItem item = ShoppingListItem.builder()
                     .product(product)
-                    .price(bestPrice.multiply(BigDecimal.valueOf(basketItem.quantity())))
+                    .price(finalPrice)
                     .quantity(basketItem.quantity())
                     .build();
 
@@ -59,8 +62,15 @@ public class ShoppingOptimizerService {
         }
         List<ShoppingList> lists = new ArrayList<>();
         for (Map.Entry<Store, List<ShoppingListItem>> entry : storeMap.entrySet()) {
+            List<ShoppingListItem> items = entry.getValue();
+            BigDecimal totalPrice = BigDecimal.ZERO;
+
+            for (ShoppingListItem item: items) {
+                totalPrice = totalPrice.add(item.getPrice());
+            }
             ShoppingList list = ShoppingList.builder()
                     .user(user)
+                    .totalPrice(totalPrice)
                     .store(entry.getKey())
                     .name("Shopping List - " + entry.getKey().getName() + " | " + LocalDate.now())
                     .build();
