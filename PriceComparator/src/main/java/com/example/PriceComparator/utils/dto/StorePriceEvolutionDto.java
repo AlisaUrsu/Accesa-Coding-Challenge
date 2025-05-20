@@ -4,6 +4,6 @@ import java.util.List;
 
 public record StorePriceEvolutionDto(
         String storeName,
-        List<PriceEvolutionDto> pricePoints
+        List<ProductTrendDto> products
 ) {
 }

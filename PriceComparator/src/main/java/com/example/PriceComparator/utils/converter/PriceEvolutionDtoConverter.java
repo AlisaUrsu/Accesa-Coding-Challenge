@@ -15,7 +15,8 @@ public class PriceEvolutionDtoConverter implements Converter<PriceHistory, Price
     public PriceEvolutionDto createFromEntity(PriceHistory entity) {
         return new PriceEvolutionDto(
                 entity.getDate(),
-                entity.getPrice()
+                entity.getPrice(),
+                entity.getPricePerUnit()
         );
     }
 }

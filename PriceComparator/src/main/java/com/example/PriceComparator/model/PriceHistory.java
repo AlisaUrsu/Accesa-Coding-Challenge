@@ -31,4 +31,5 @@ public class PriceHistory {
     private String currency;
 
     private BigDecimal pricePerUnit;
+
 }

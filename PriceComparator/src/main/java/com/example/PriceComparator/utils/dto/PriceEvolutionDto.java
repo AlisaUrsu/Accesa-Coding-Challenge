@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 public record PriceEvolutionDto(
         LocalDate date,
-        BigDecimal price
+        BigDecimal price,
+        BigDecimal pricePerUnit
 ) {
 }
