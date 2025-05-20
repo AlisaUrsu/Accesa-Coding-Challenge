@@ -9,7 +9,9 @@ import com.example.PriceComparator.utils.converter.ShoppingListDtoConverter;
 import com.example.PriceComparator.utils.dto.BasketItemDto;
 import com.example.PriceComparator.utils.dto.ShoppingListDto;
 import com.example.PriceComparator.utils.dto.UnavailableResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,11 +26,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/shopping")
 @SecurityRequirement(name = "basicAuth")
+@Tag(name = "Shopping Optimizer")
 public class ShoppingOptimizerController {
     private final ShoppingOptimizerService shoppingOptimizerService;
     private final CurrentUserService currentUserService;
     private final ShoppingListDtoConverter shoppingListDtoConverter;
 
+    @Operation(
+            description = "Generate optimized lists",
+            summary = "Allows users to select some products and the system returns an optimized shopping list " +
+                    "for every store."
+    )
     @PostMapping("/optimize")
     public Result<UnavailableResponseDto> optimizeShopping(@RequestBody List<BasketItemDto> basket) {
         User user = currentUserService.getCurrentUser();
