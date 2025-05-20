@@ -5,6 +5,10 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+/**
+ * Class representing the alerts set by users to notify them when the price of a product drops below a specified
+ * threshold.
+ */
 @Entity
 @Table(name = "price_alert")
 @Getter

@@ -2,10 +2,12 @@ package com.example.PriceComparator.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 import java.util.Set;
 
+/**
+ * A really basic class for User to "mock" their experience with the application. Users will see products and discounts
+ * only for the selected/preferred stores
+ */
 @Entity
 @Table(name = "users")
 @Getter

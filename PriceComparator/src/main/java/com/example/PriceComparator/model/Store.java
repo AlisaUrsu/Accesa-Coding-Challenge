@@ -5,6 +5,9 @@ import lombok.*;
 
 import java.util.Objects;
 
+/**
+ * This class is for stores. New Stores are added by .csv filename
+ */
 @Entity
 @Table(name = "stores")
 @Getter

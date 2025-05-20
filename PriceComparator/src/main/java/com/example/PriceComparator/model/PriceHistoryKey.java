@@ -3,7 +3,9 @@ package com.example.PriceComparator.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
-
+/**
+ * Implementation for the composite key needed by PriceHistory class
+ */
 public class PriceHistoryKey implements Serializable {
     private Long store;
     private String product;

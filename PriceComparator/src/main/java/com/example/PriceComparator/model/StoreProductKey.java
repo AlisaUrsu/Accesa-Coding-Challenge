@@ -3,6 +3,9 @@ package com.example.PriceComparator.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Implementation for the composite key needed by StoreProduct class
+ */
 public class StoreProductKey implements Serializable {
     private Long store;
     private String product;

@@ -6,6 +6,10 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Class for discounts read from input files. This tables stores the StoreProduct that has a discount.
+ * Only the most recent discounts (based on import date) are stored in this table.
+ */
 @Entity
 @Table(name = "discounts")
 @Getter
@@ -16,16 +20,16 @@ import java.time.LocalDate;
 public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @ManyToOne
-    StoreProduct storeProduct;
+    private StoreProduct storeProduct;
 
-    LocalDate fromDate;
+    private LocalDate fromDate;
 
-    LocalDate toDate;
+    private LocalDate toDate;
 
-    BigDecimal percentage;
+    private BigDecimal percentage;
 
-    LocalDate date;
+    private LocalDate date;
 }

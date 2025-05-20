@@ -5,6 +5,10 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+/**
+ * This class stores products read from .csv files. This class contains only general information about the product,
+ * like brand, category (both separate entities), package quantity and unit (separate entity)
+ */
 @Entity
 @Table(name = "products")
 @Getter

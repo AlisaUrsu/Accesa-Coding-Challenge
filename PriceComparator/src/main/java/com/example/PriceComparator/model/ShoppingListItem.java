@@ -5,6 +5,10 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+/**
+ * This class represents an item from a shopping list. price refers to the total price of a product computed by
+ * its base price multiplied with the quantity.
+ */
 @Entity
 @Getter
 @Setter

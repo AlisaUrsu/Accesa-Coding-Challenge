@@ -3,6 +3,9 @@ package com.example.PriceComparator.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Class representing the brand of a product. Stored separately to provide extensibility for future changes
+ */
 @Entity
 @Table(name = "brands")
 @Getter
