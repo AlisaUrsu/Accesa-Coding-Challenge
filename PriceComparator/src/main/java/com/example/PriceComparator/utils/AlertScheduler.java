@@ -15,7 +15,7 @@ public class AlertScheduler {
         this.alertService = alertService;
     }
 
-    @Scheduled(fixedRate = 500000)
+    @Scheduled(fixedRate = 50000)
     public void runAlertCheck() {
         alertService.checkAlert();
     }

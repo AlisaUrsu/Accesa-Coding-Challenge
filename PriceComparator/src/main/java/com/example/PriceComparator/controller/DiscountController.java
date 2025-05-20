@@ -5,7 +5,9 @@ import com.example.PriceComparator.service.DiscountService;
 import com.example.PriceComparator.utils.Result;
 import com.example.PriceComparator.utils.converter.DiscountDtoConverter;
 import com.example.PriceComparator.utils.dto.DiscountDto;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -21,10 +23,16 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/discounts")
 @SecurityRequirement(name = "basicAuth")
+@Tag(name = "Discounts")
 public class DiscountController {
     private final DiscountService discountService;
     private final DiscountDtoConverter discountDtoConverter;
 
+    @Operation(
+            description = "Best discounts",
+            summary = "Retrieves every discount sorted in descending order. Discounted price and price per unit are also" +
+                    "displayed."
+    )
     @GetMapping("/best")
     public Result<List<DiscountDto>> getBestDiscounts() {
         var discountsDto = discountService.getBestDiscounts().stream()
@@ -34,6 +42,11 @@ public class DiscountController {
                 "discounts.", discountsDto);
     }
 
+    @Operation(
+            description = "New discounts",
+            summary = "Retrieves only the discounts that appeared a day ago, or more days ago. Discounted price and " +
+                    "price per unit are also displayed."
+    )
     @GetMapping("/new")
     public Result<List<DiscountDto>> getNewDiscounts(@RequestParam(defaultValue = "1") int days) {
         LocalDate since = LocalDate.now().minusDays(days);

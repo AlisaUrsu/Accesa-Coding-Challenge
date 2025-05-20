@@ -12,6 +12,10 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Set;
 
+/**
+ * Aspect that intercepts methods annotated with @FilterByStorePreferences and filters their result collections
+ * to only include products from the current user's preferred stores
+ */
 @Aspect
 @Component
 @RequiredArgsConstructor
@@ -23,16 +27,26 @@ public class StorePreferencesAspect {
     public Object filterByStorePreferences(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = joinPoint.proceed();
 
+        // Get the current user's preferred stores
         Set<Store> preferredStores = currentUserService.getPreferredStores();
 
+        // If the result is a Collection, apply store filtering
         if (result instanceof Collection<?> collection) {
             return collection.stream()
                     .filter(item -> {
                         try {
                             Store store = extractStoreFromItem(item);
-                            return store == null || preferredStores.contains(store);
+                            if (store == null) {
+                                return true; // allow item if store is unknown (fail-safe)
+                            }
+
+                            if (preferredStores.contains(store)) {
+                                return true; // allow item if store is in user's preferences
+                            }
+
+                            return false; // otherwise, exclude the item
                         } catch (Exception e) {
-                            return true; // fail-safe: include item if error
+                            return true;
                         }
                     })
                     .toList();
@@ -48,7 +62,7 @@ public class StorePreferencesAspect {
             return (Store) getStoreMethod.invoke(item);
         } catch (NoSuchMethodException e1) {
             try {
-                // Case: Discount → getStoreProduct() → getStore()
+                // Case: Discount -> getStoreProduct() -> getStore()
                 Method getStoreProduct = item.getClass().getMethod("getStoreProduct");
                 Object storeProduct = getStoreProduct.invoke(item);
                 if (storeProduct != null) {

@@ -10,6 +10,8 @@ import com.example.PriceComparator.service.UserService;
 import com.example.PriceComparator.utils.Result;
 import com.example.PriceComparator.utils.converter.PriceAlertConverter;
 import com.example.PriceComparator.utils.dto.PriceAlertRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +25,17 @@ import java.math.BigDecimal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/alerts")
+@Tag(name = "Price Alerts")
 public class PriceAlertController {
-
     private final PriceAlertService priceAlertService;
-    private final ProductService productService;
     private final CurrentUserService userService;
     private final PriceAlertConverter priceAlertConverter;
 
+    @Operation(
+            description = "Create alert for product",
+            summary = "Allows users to set a threshold for a product and the system will notify them when the price" +
+                    "drops below it."
+    )
     @PostMapping
     public Result<?> createAlert(@RequestBody PriceAlertRequest request) {
         User user = userService.getCurrentUser();
