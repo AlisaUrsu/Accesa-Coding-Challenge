@@ -12,10 +12,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PriceEvolutionService {
     private final PriceHistoryRepository priceHistoryRepository;
-    private final DiscountHistoryRepository discountHistoryRepository;
 
     public List<PriceHistory> getPriceTrendsById(String id) {
         return priceHistoryRepository.findByProductIdOrderByDateAsc(id);
+    }
+
+    public List<PriceHistory> getPriceTrendsFiltered(String store, String brand, String category) {
+        return priceHistoryRepository.findByFilters(store, brand, category);
     }
 
 }

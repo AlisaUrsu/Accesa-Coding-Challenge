@@ -20,15 +20,15 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CsvImportService {
-    private BrandRepository brandRepository;
-    private CategoryRepository categoryRepository;
-    private ProductRepository productRepository;
-    private StoreRepository storeRepository;
-    private StoreProductRepository storeProductRepository;
-    private UnitRepository unitRepository;
-    private PriceHistoryRepository priceHistoryRepository;
-    private DiscountRepository discountRepository;
-    private DiscountHistoryRepository discountHistoryRepository;
+    private final BrandRepository brandRepository;
+    private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
+    private final StoreRepository storeRepository;
+    private final StoreProductRepository storeProductRepository;
+    private final UnitRepository unitRepository;
+    private final PriceHistoryRepository priceHistoryRepository;
+    private final DiscountRepository discountRepository;
+    private final DiscountHistoryRepository discountHistoryRepository;
 
     public void importCsv(String storeName, LocalDate localDate, InputStream csvStream) throws IOException {
         // Get or create a new store if not present in the database

@@ -10,10 +10,7 @@ import com.example.PriceComparator.utils.dto.StorePriceEvolutionDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +27,19 @@ public class PriceEvolutionController {
         List<PriceHistory> history = priceEvolutionService.getPriceTrendsById(productId);
 
         List<StorePriceEvolutionDto> priceEvolutionDtos = storePriceEvolutionDtoConverter.convertGroupedByStore(history);
+
+        return new Result<>(true, HttpStatus.OK.value(), "Retrieved price evolution for this product", priceEvolutionDtos);
+    }
+
+    @GetMapping
+    public Result<List<StorePriceEvolutionDto>> getPriceTrends(
+            @RequestParam(required = false) String storeName,
+            @RequestParam(required = false) String brandName,
+            @RequestParam(required = false) String categoryName) {
+
+        var priceHistories = priceEvolutionService.getPriceTrendsFiltered(storeName, brandName, categoryName);
+
+        List<StorePriceEvolutionDto> priceEvolutionDtos = storePriceEvolutionDtoConverter.convertGroupedByStore(priceHistories);
 
         return new Result<>(true, HttpStatus.OK.value(), "Retrieved price evolution for this product", priceEvolutionDtos);
     }
