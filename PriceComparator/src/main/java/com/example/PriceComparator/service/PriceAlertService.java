@@ -34,14 +34,12 @@ public class PriceAlertService {
 
                 // Check for an active discount
                 Optional<Discount> activeDiscount = discountRepository
-                        .findFirstByStoreProductAndFromDateLessThanEqualAndToDateGreaterThanEqualOrderByFromDateDesc(
-                                sp,
-                                LocalDate.now(),
-                                LocalDate.now()
-                        );
+                        .findActiveDiscountForProduct(sp, LocalDate.now());
 
+                // If it exists, the discount will be applied
                 if (activeDiscount.isPresent()) {
                     BigDecimal discountPercentage = activeDiscount.get().getPercentage();
+                    // Logic: bestPrice = basePrice * (1 - (percentage / 100))
                     BigDecimal discounted = basePrice.multiply(
                             BigDecimal.ONE.subtract(discountPercentage.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP))
                     ).setScale(2, RoundingMode.HALF_UP);
@@ -62,7 +60,6 @@ public class PriceAlertService {
     private void notifyUser(User user, Product product, String store, BigDecimal price) {
         System.out.printf("ALERT: '%s' is now %.2f RON at %s for user %s%n",
                 product.getName(), price, store, user.getUsername());
-        // Replace with email logic if needed
     }
 
     public PriceAlert addPriceAlert(PriceAlert priceAlert) {

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PriceEvolutionService {
+public class PriceHistoryService {
     private final PriceHistoryRepository priceHistoryRepository;
 
     public List<PriceHistory> getPriceTrendsById(String id) {

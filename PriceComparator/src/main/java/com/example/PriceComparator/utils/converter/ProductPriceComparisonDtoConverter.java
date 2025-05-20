@@ -28,9 +28,7 @@ public class ProductPriceComparisonDtoConverter implements Converter<StoreProduc
 
         // Find current discount if any
         Optional<Discount> optionalDiscount = discountRepository
-                .findFirstByStoreProductAndFromDateLessThanEqualAndToDateGreaterThanEqualOrderByFromDateDesc(
-                        entity, LocalDate.of(2025, 5, 13), LocalDate.of(2025, 5, 13)
-                );
+                .findActiveDiscountForProduct(entity, LocalDate.now());
 
         BigDecimal discountPercentage = optionalDiscount
                 .map(Discount::getPercentage)

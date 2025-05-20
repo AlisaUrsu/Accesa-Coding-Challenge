@@ -1,11 +1,9 @@
 package com.example.PriceComparator.controller;
 
 import com.example.PriceComparator.model.PriceHistory;
-import com.example.PriceComparator.service.PriceEvolutionService;
+import com.example.PriceComparator.service.PriceHistoryService;
 import com.example.PriceComparator.utils.Result;
-import com.example.PriceComparator.utils.converter.PriceEvolutionDtoConverter;
 import com.example.PriceComparator.utils.converter.StorePriceEvolutionDtoConverter;
-import com.example.PriceComparator.utils.dto.PriceEvolutionDto;
 import com.example.PriceComparator.utils.dto.StorePriceEvolutionDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,7 @@ import java.util.List;
 @RequestMapping("/price-trends")
 @SecurityRequirement(name = "basicAuth")
 public class PriceEvolutionController {
-    private final PriceEvolutionService priceEvolutionService;
+    private final PriceHistoryService priceEvolutionService;
     private final StorePriceEvolutionDtoConverter storePriceEvolutionDtoConverter;
 
     @GetMapping("/{productId}")

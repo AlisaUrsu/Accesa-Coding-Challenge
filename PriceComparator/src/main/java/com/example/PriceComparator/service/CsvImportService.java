@@ -5,7 +5,6 @@ import com.example.PriceComparator.repository.*;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -38,11 +37,11 @@ public class CsvImportService {
         });
 
         try (CSVReader reader = new CSVReader(new InputStreamReader(csvStream))) {
-            reader.readNext(); // Skip header row
+            reader.readNext(); // skip header row
 
             String[] row;
             while ((row = reader.readNext()) != null) {
-                // Parse CSV columns
+                // parse CSV columns
                 String productId = row[0];
                 String productName = row[1];
                 String categoryName = row[2];
@@ -77,11 +76,12 @@ public class CsvImportService {
                     return productRepository.save(newProduct);
                 });
 
-                // Compute price per standard unit (e.g. g -> kg or ml -> l)
-                // price / (quantity * unit conversion factor)
-                BigDecimal conversionFactor = unit.getConversionFactor(); // e.g., 0.001 for "g" to "kg"
+                // Get the conversion factor to convert the unit to standard unit
+                BigDecimal conversionFactor = unit.getConversionFactor(); // 0.001 for g to kg, for example
                 BigDecimal quantityInStandardUnit = quantity.multiply(conversionFactor);
 
+                // Check if the converted quantity is greater than 0 to avoid errors
+                // Logic: pricePerUnit = price / (quantity * unit conversion factor)
                 BigDecimal pricePerStandardUnit = quantityInStandardUnit.compareTo(BigDecimal.ZERO) > 0
                         ? price.divide(quantityInStandardUnit, 4, RoundingMode.HALF_UP)
                         : null;
@@ -131,7 +131,7 @@ public class CsvImportService {
     public void importDiscountCsv(String storeName, LocalDate importDate, InputStream csvStream) throws IOException {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yy");
 
-        // Store has to exist firstly
+        // Store has to exist in database
         Store store = storeRepository.findByName(storeName)
                 .orElseThrow(() -> new IllegalArgumentException("Store not found: " + storeName));
 
@@ -140,11 +140,13 @@ public class CsvImportService {
 
             String[] row;
             while ((row = reader.readNext()) != null) {
+                // Parse only needed new data
                 String productId = row[0];
                 LocalDate fromDate = LocalDate.parse(row[6], dateTimeFormatter);
                 LocalDate toDate = LocalDate.parse(row[7], dateTimeFormatter);
                 BigDecimal percentage = new BigDecimal(row[8]);
 
+                // Discounts should be applicable only on products present in database
                 Product product = productRepository.findById(productId)
                         .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productId));
 
@@ -152,9 +154,10 @@ public class CsvImportService {
                         .orElseThrow(() -> new IllegalStateException("StoreProduct not found for product " + productId + " in store " + storeName));
 
 
-
+                // Check if a discount for a product already exists
                 Optional<Discount> existingDiscount = discountRepository.findByStoreProduct(storeProduct);
 
+                // If not, a new one will be created
                 if (existingDiscount.isEmpty()) {
                     Discount newDiscount = Discount.builder()
                             .storeProduct(storeProduct)
@@ -166,6 +169,8 @@ public class CsvImportService {
 
                     discountRepository.save(newDiscount);
                 } else {
+                    // If new discounts are imported, keep only the new ones
+                    // This part also ensures that if duplicates exists in the same file, only the first one is stored
                     Discount discount = existingDiscount.get();
                     if (importDate.isAfter(discount.getDate())) {
                        discount.setDate(importDate);
