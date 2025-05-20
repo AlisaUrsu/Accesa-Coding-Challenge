@@ -8,6 +8,7 @@ import com.example.PriceComparator.utils.Result;
 import com.example.PriceComparator.utils.converter.ShoppingListDtoConverter;
 import com.example.PriceComparator.utils.dto.BasketItemDto;
 import com.example.PriceComparator.utils.dto.ShoppingListDto;
+import com.example.PriceComparator.utils.dto.UnavailableResponseDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,12 +30,20 @@ public class ShoppingOptimizerController {
     private final ShoppingListDtoConverter shoppingListDtoConverter;
 
     @PostMapping("/optimize")
-    public Result<List<ShoppingListDto>> optimizeShopping(@RequestBody List<BasketItemDto> basket) {
+    public Result<UnavailableResponseDto> optimizeShopping(@RequestBody List<BasketItemDto> basket) {
         User user = currentUserService.getCurrentUser();
-        List<ShoppingList> lists = shoppingOptimizerService.generateOptimizedLists(user, basket);
+        List<String> unavailable = new ArrayList<>();
+        List<ShoppingList> lists = shoppingOptimizerService.generateOptimizedLists(user, basket, unavailable);
         List<ShoppingListDto> listDtos = lists.stream()
                 .map(shoppingListDtoConverter::createFromEntity)
                 .toList();
-        return new Result<>(true, HttpStatus.CREATED.value(), "Optimized basket.", listDtos);
+
+        String message = unavailable.isEmpty()
+                ? "Optimized basket."
+                : "Optimized basket. Some products were not available in your preferred stores.";
+
+        UnavailableResponseDto responseDto = new UnavailableResponseDto(listDtos, unavailable);
+
+        return new Result<>(true, HttpStatus.CREATED.value(), message, responseDto);
     }
 }

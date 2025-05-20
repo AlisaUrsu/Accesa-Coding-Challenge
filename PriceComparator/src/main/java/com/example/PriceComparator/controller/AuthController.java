@@ -3,6 +3,7 @@ package com.example.PriceComparator.controller;
 import com.example.PriceComparator.config.SecurityUser;
 import com.example.PriceComparator.model.Store;
 import com.example.PriceComparator.model.User;
+import com.example.PriceComparator.service.CurrentUserService;
 import com.example.PriceComparator.service.UserService;
 import com.example.PriceComparator.utils.Result;
 import com.example.PriceComparator.utils.converter.RegistrationRequestConverter;
@@ -21,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,6 +32,7 @@ public class AuthController {
     private final RegistrationRequestConverter registrationRequestConverter;
     private final AuthenticationManager authenticationManager;
     private final UserDtoConverter userDtoConverter;
+    private final CurrentUserService currentUserService;
     @PostMapping("/register")
     public Result<?> register(@RequestBody RegistrationRequest registrationRequest) {
 
@@ -58,6 +61,13 @@ public class AuthController {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userDtoConverter.createFromEntity(userService.getUserByUsername(username));
         return new Result<>(true, HttpStatus.OK.value(), "Retrieved currently logged in user.", user);
+    }
+
+    @PostMapping("/preferred-stores")
+    public Result<?> updatePreferredStores(@RequestBody Set<Long> storeIds) {
+        User currentUser = currentUserService.getCurrentUser();
+        userService.updatePreferredStores(currentUser, storeIds);
+        return new Result<>(true, HttpStatus.OK.value(), "Preferred stores updated.", null);
     }
 
 }

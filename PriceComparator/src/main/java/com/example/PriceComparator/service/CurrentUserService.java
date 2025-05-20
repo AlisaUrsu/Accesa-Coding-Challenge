@@ -15,8 +15,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class CurrentUserService {
 
-    private final UserRepository userRepository;
-
     public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !(auth.getPrincipal() instanceof SecurityUser)) {
@@ -27,9 +25,7 @@ public class CurrentUserService {
 
     public Set<Store> getPreferredStores() {
         User user = getCurrentUser();
-        Set<Store> stores = user.getPreferredStores();  // Check if this is populated
-        System.out.println("User's preferred stores: " + stores);
-        return stores;
+        return user.getPreferredStores();
 
     }
 }

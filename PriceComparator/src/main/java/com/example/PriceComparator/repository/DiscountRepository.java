@@ -1,5 +1,6 @@
 package com.example.PriceComparator.repository;
 
+import com.example.PriceComparator.aop.FilterByStorePreferences;
 import com.example.PriceComparator.model.Discount;
 import com.example.PriceComparator.model.StoreProduct;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -32,9 +33,11 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
 
     Optional<Discount> findByStoreProduct(StoreProduct storeProduct);
 
+    @FilterByStorePreferences
     @Query("SELECT d FROM Discount d ORDER BY d.percentage DESC")
     List<Discount> findTopByOrderByDiscountPercentageDesc();
 
+    @FilterByStorePreferences
     List<Discount> findByFromDateAfter(LocalDate date);
 
     Optional<Discount> findFirstByStoreProductAndFromDateLessThanEqualAndToDateGreaterThanEqualOrderByFromDateDesc(

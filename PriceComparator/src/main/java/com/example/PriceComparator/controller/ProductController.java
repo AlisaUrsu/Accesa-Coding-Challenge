@@ -32,6 +32,11 @@ public class ProductController {
 
         List<StoreProduct> storeProducts = storeProductsService.getStoreProductsByProduct(product);
 
+        if (storeProducts.isEmpty()) {
+            return new Result<>(false, HttpStatus.NOT_FOUND.value(), "No stores found for this product.", List.of());
+        }
+
+
         List<ProductPriceComparisonDto> comparisonDtos = storeProducts.stream()
                 .map(priceComparisonDtoConverter::createFromEntity)
                 .toList();
@@ -42,6 +47,11 @@ public class ProductController {
     @GetMapping("/{productName}")
     public Result<List<ProductPriceComparisonDto>> compareProductPricePerUnit(@PathVariable String productName) {
         List<StoreProduct> storeProducts = storeProductsService.getBestByPricePerUnit(productName);
+
+        if (storeProducts.isEmpty()) {
+            return new Result<>(false, HttpStatus.NOT_FOUND.value(), "No stores found for this product.", List.of());
+        }
+
 
         List<ProductPriceComparisonDto> comparisonDtos = storeProducts.stream()
                 .map(priceComparisonDtoConverter::createFromEntity)

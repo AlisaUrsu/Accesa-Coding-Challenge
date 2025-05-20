@@ -6,7 +6,6 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "shopping_list_items")
 @Getter
 @Setter
 @Builder

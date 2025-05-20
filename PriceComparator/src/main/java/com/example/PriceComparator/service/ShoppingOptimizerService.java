@@ -1,5 +1,6 @@
 package com.example.PriceComparator.service;
 
+import com.example.PriceComparator.aop.FilterByStorePreferences;
 import com.example.PriceComparator.model.*;
 import com.example.PriceComparator.repository.*;
 import com.example.PriceComparator.utils.dto.BasketItemDto;
@@ -20,11 +21,20 @@ public class ShoppingOptimizerService {
     private final DiscountRepository discountRepository;
     private final ProductRepository productRepository;
 
-    public List<ShoppingList> generateOptimizedLists(User user, List<BasketItemDto> basket) {
+    @FilterByStorePreferences
+    public List<ShoppingList> generateOptimizedLists(User user, List<BasketItemDto> basket, List<String> unavailableProducts) {
         Map<Store, List<ShoppingListItem>> storeMap = new HashMap<>();
+
         for (BasketItemDto basketItem: basket) {
             Product product = productRepository.findById(basketItem.productId()).orElseThrow();
             List<StoreProduct> options = storeProductRepository.findByProduct(product);
+
+            if (options.isEmpty()) {
+                unavailableProducts.add(product.getName());
+                continue;
+            }
+            System.out.println(options);
+            System.out.println(unavailableProducts);
 
             StoreProduct best = null;
             BigDecimal bestPrice = null;

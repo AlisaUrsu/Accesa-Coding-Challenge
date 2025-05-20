@@ -26,7 +26,7 @@ public class ShoppingList {
     @ManyToOne
     private Store store;
 
-    @OneToMany
+    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShoppingListItem> items;
 
     private BigDecimal totalPrice;

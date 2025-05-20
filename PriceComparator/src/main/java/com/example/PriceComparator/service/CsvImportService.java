@@ -28,7 +28,6 @@ public class CsvImportService {
     private final UnitRepository unitRepository;
     private final PriceHistoryRepository priceHistoryRepository;
     private final DiscountRepository discountRepository;
-    private final DiscountHistoryRepository discountHistoryRepository;
 
     public void importCsv(String storeName, LocalDate localDate, InputStream csvStream) throws IOException {
         // Get or create a new store if not present in the database
@@ -153,14 +152,6 @@ public class CsvImportService {
                         .orElseThrow(() -> new IllegalStateException("StoreProduct not found for product " + productId + " in store " + storeName));
 
 
-                DiscountHistory discountHistory = DiscountHistory.builder()
-                        .storeProduct(storeProduct)
-                        .fromDate(fromDate)
-                        .toDate(toDate)
-                        .percentage(percentage)
-                        .build();
-
-                discountHistoryRepository.save(discountHistory);
 
                 Optional<Discount> existingDiscount = discountRepository.findByStoreProduct(storeProduct);
 

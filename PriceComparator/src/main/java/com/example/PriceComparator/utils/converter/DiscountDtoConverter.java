@@ -1,5 +1,6 @@
 package com.example.PriceComparator.utils.converter;
 
+import com.example.PriceComparator.aop.FilterByStorePreferences;
 import com.example.PriceComparator.model.Discount;
 import com.example.PriceComparator.utils.dto.DiscountDto;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import java.math.RoundingMode;
 @Component
 @RequiredArgsConstructor
 public class DiscountDtoConverter implements Converter<Discount, DiscountDto> {
+
     @Override
     public DiscountDto createFromEntity(Discount entity) {
         var storeProduct = entity.getStoreProduct();

@@ -1,5 +1,6 @@
 package com.example.PriceComparator.service;
 
+import com.example.PriceComparator.aop.FilterByStorePreferences;
 import com.example.PriceComparator.model.*;
 import com.example.PriceComparator.repository.DiscountRepository;
 import com.example.PriceComparator.repository.PriceAlertRepository;
@@ -20,6 +21,7 @@ public class PriceAlertService {
     private final StoreProductRepository storeProductRepository;
     private final DiscountRepository discountRepository;
 
+    @FilterByStorePreferences
     public void checkAlert() {
         List<PriceAlert> alerts = priceAlertRepository.findByTriggeredFalse();
 

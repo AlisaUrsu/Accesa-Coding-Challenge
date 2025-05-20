@@ -22,8 +22,7 @@ public class Store {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Store)) return false;
-        Store store = (Store) o;
+        if (!(o instanceof Store store)) return false;
         return id != null && id.equals(store.getId());
     }
 

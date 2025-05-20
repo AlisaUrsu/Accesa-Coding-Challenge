@@ -1,7 +1,6 @@
 package com.example.PriceComparator.controller;
 
-import com.example.PriceComparator.aop.DiscountQueryParams;
-import com.example.PriceComparator.model.Discount;
+import com.example.PriceComparator.aop.FilterByStorePreferences;
 import com.example.PriceComparator.service.DiscountService;
 import com.example.PriceComparator.utils.Result;
 import com.example.PriceComparator.utils.converter.DiscountDtoConverter;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

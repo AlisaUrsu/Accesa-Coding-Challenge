@@ -1,7 +1,6 @@
 package com.example.PriceComparator.service;
 
 import com.example.PriceComparator.model.PriceHistory;
-import com.example.PriceComparator.repository.DiscountHistoryRepository;
 import com.example.PriceComparator.repository.PriceHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
