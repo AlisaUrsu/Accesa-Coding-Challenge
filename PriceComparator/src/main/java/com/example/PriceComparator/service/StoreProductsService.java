@@ -16,4 +16,8 @@ public class StoreProductsService {
     public List<StoreProduct> getStoreProductsByProduct(Product product){
         return  storeProductRepository.findByProduct(product);
     }
+
+    public List<StoreProduct> getBestByPricePerUnit(String productName) {
+        return storeProductRepository.findTheBestByPricePerUnit(productName);
+    }
 }

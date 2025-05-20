@@ -38,4 +38,15 @@ public class ProductController {
 
         return new Result<>(true, HttpStatus.OK.value(), "Retrieved all prices for this product.", comparisonDtos);
     }
+
+    @GetMapping("/{productName}")
+    public Result<List<ProductPriceComparisonDto>> compareProductPricePerUnit(@PathVariable String productName) {
+        List<StoreProduct> storeProducts = storeProductsService.getBestByPricePerUnit(productName);
+
+        List<ProductPriceComparisonDto> comparisonDtos = storeProducts.stream()
+                .map(priceComparisonDtoConverter::createFromEntity)
+                .toList();
+
+        return new Result<>(true, HttpStatus.OK.value(), "Retrieved all prices for this product.", comparisonDtos);
+    }
 }
