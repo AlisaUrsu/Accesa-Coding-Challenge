@@ -27,6 +27,10 @@ public class StorePreferencesAspect {
     public Object filterByStorePreferences(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = joinPoint.proceed();
 
+        if (!currentUserService.isAuthenticated()) {
+            return result;
+        }
+
         // Get the current user's preferred stores
         Set<Store> preferredStores = currentUserService.getPreferredStores();
 

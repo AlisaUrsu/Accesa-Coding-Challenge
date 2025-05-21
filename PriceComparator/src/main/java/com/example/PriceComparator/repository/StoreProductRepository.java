@@ -17,7 +17,8 @@ public interface StoreProductRepository extends JpaRepository<StoreProduct, Stor
     Optional<StoreProduct> findByStoreAndProduct(Store store, Product product);
     @FilterByStorePreferences
     List<StoreProduct> findByProduct(Product product);
-    @FilterByStorePreferences
+
+    //@FilterByStorePreferences
     List<StoreProduct> findByProductOrderByPricePerUnit(Product product);
     @FilterByStorePreferences
     @Query("SELECT s FROM StoreProduct s WHERE s.product.name = :productName ORDER BY s.pricePerUnit")

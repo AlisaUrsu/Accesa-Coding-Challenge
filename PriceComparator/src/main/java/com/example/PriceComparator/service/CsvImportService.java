@@ -187,4 +187,49 @@ public class CsvImportService {
         }
     }
 
+    public void addUnits(){
+        Unit unit1 = Unit.builder()
+                .name("g")
+                .standardUnit("kg")
+                .conversionFactor(new BigDecimal("0.001"))
+                .build();
+
+        Unit unit2 = Unit.builder()
+                .name("kg")
+                .standardUnit("kg")
+                .conversionFactor(new BigDecimal("1"))
+                .build();
+
+        Unit unit3 = Unit.builder()
+                .name("ml")
+                .standardUnit("l")
+                .conversionFactor(new BigDecimal("0.001"))
+                .build();
+
+        Unit unit4 = Unit.builder()
+                .name("l")
+                .standardUnit("l")
+                .conversionFactor(new BigDecimal("1"))
+                .build();
+
+        Unit unit5 = Unit.builder()
+                .name("role")
+                .standardUnit("rola")
+                .conversionFactor(new BigDecimal("1"))
+                .build();
+
+        Unit unit6 = Unit.builder()
+                .name("buc")
+                .standardUnit("buc")
+                .conversionFactor(new BigDecimal("1"))
+                .build();
+
+        unitRepository.save(unit1);
+        unitRepository.save(unit2);
+        unitRepository.save(unit3);
+        unitRepository.save(unit4);
+        unitRepository.save(unit5);
+        unitRepository.save(unit6);
+    }
+
 }

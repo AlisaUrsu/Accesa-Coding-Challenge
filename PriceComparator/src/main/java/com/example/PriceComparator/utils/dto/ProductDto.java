@@ -2,7 +2,7 @@ package com.example.PriceComparator.utils.dto;
 
 import java.math.BigDecimal;
 
-public record ProductPriceComparisonDto(
+public record ProductDto(
         String storeName,
         BigDecimal originalPrice,
         BigDecimal packageQuantity,

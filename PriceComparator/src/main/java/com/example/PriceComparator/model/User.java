@@ -2,6 +2,8 @@ package com.example.PriceComparator.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -32,5 +34,5 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "store_id")
     )
-    private Set<Store> preferredStores;
+    private Set<Store> preferredStores = new HashSet<>();
 }

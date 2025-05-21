@@ -1,11 +1,12 @@
 package com.example.PriceComparator.controller;
 
+import com.example.PriceComparator.model.Product;
 import com.example.PriceComparator.model.StoreProduct;
 import com.example.PriceComparator.service.ProductService;
 import com.example.PriceComparator.service.StoreProductsService;
 import com.example.PriceComparator.utils.Result;
-import com.example.PriceComparator.utils.converter.ProductPriceComparisonDtoConverter;
-import com.example.PriceComparator.utils.dto.ProductPriceComparisonDto;
+import com.example.PriceComparator.utils.converter.ProductDtoConverter;
+import com.example.PriceComparator.utils.dto.ProductDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,16 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("${api.endpoint.base-url}/products")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "basicAuth")
 @Tag(name = "Products")
 public class ProductController {
     private final StoreProductsService storeProductsService;
-    private final ProductPriceComparisonDtoConverter priceComparisonDtoConverter;
+    private final ProductDtoConverter priceComparisonDtoConverter;
     private final ProductService productService;
 
     @Operation(
@@ -34,8 +34,8 @@ public class ProductController {
             summary = "Displays prices for a product across all stores. Sorted by best price per unit."
     )
     @GetMapping("/compare/{productId}")
-    public Result<List<ProductPriceComparisonDto>> compareProductPrice(@PathVariable String productId) {
-        var product = productService.getProductById(productId);
+    public Result<List<ProductDto>> compareProductPrice(@PathVariable String productId) {
+        Product product = productService.getProductById(productId);
 
         List<StoreProduct> storeProducts = storeProductsService.getStoreProductsByProduct(product);
 
@@ -43,8 +43,7 @@ public class ProductController {
             return new Result<>(false, HttpStatus.NOT_FOUND.value(), "No stores found for this product.", List.of());
         }
 
-
-        List<ProductPriceComparisonDto> comparisonDtos = storeProducts.stream()
+        List<ProductDto> comparisonDtos = storeProducts.stream()
                 .map(priceComparisonDtoConverter::createFromEntity)
                 .toList();
 
@@ -56,14 +55,14 @@ public class ProductController {
                     "Sorted by best price per unit."
     )
     @GetMapping("/{productName}")
-    public Result<List<ProductPriceComparisonDto>> compareProductPricePerUnit(@PathVariable String productName) {
+    public Result<List<ProductDto>> compareProductPricePerUnit(@PathVariable String productName) {
         List<StoreProduct> storeProducts = storeProductsService.getBestByPricePerUnit(productName);
 
         if (storeProducts.isEmpty()) {
             return new Result<>(false, HttpStatus.NOT_FOUND.value(), "No stores found for this product.", List.of());
         }
 
-        List<ProductPriceComparisonDto> comparisonDtos = storeProducts.stream()
+        List<ProductDto> comparisonDtos = storeProducts.stream()
                 .map(priceComparisonDtoConverter::createFromEntity)
                 .toList();
 

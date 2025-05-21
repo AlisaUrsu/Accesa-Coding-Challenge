@@ -5,6 +5,7 @@ import com.example.PriceComparator.model.Store;
 import com.example.PriceComparator.model.User;
 import com.example.PriceComparator.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,11 @@ public class CurrentUserService {
     public Set<Store> getPreferredStores() {
         User user = getCurrentUser();
         return user.getPreferredStores();
-
     }
+
+    public boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
+    }
+
 }

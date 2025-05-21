@@ -30,7 +30,6 @@ public class ShoppingOptimizerService {
      * @param unavailableProducts A list to store names of products that couldn't be found
      * @return A list of optimized shopping lists, one per store
      */
-    @FilterByStorePreferences
     public List<ShoppingList> generateOptimizedLists(User user, List<BasketItemDto> basket, List<String> unavailableProducts) {
         Map<Store, List<ShoppingListItem>> storeMap = new HashMap<>();
 

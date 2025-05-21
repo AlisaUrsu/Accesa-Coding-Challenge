@@ -18,18 +18,21 @@ import java.util.Optional;
 public interface DiscountRepository extends JpaRepository<Discount, Long> {
     Optional<Discount> findByStoreProduct(StoreProduct storeProduct);
 
-    @FilterByStorePreferences
-    @Query("SELECT d FROM Discount d ORDER BY d.percentage DESC")
-    List<Discount> findTopByOrderByDiscountPercentageDesc();
+    @Query("""
+        SELECT d FROM Discount d
+        WHERE d.toDate >= :date
+        AND d.fromDate <= :date
+        ORDER BY d.percentage DESC
+    """)
+    List<Discount> findTopByOrderByDiscountPercentageDesc(@Param("date") LocalDate date);
 
-    @FilterByStorePreferences
     List<Discount> findByFromDateAfter(LocalDate date);
 
     @Query("""
         SELECT d FROM Discount d
         WHERE d.storeProduct = :storeProduct
-          AND d.fromDate <= :date
-          AND d.toDate >= :date
+        AND d.fromDate <= :date
+        AND d.toDate >= :date
         ORDER BY d.fromDate DESC
     """)
     Optional<Discount> findActiveDiscountForProduct(@Param("storeProduct") StoreProduct storeProduct,

@@ -1,6 +1,5 @@
 package com.example.PriceComparator.controller;
 
-import com.example.PriceComparator.aop.FilterByStorePreferences;
 import com.example.PriceComparator.service.DiscountService;
 import com.example.PriceComparator.utils.Result;
 import com.example.PriceComparator.utils.converter.DiscountDtoConverter;
@@ -21,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/discounts")
+@RequestMapping("${api.endpoint.base-url}/discounts")
 @SecurityRequirement(name = "basicAuth")
 @Tag(name = "Discounts")
 public class DiscountController {
@@ -35,7 +34,7 @@ public class DiscountController {
     )
     @GetMapping("/best")
     public Result<List<DiscountDto>> getBestDiscounts() {
-        var discountsDto = discountService.getBestDiscounts().stream()
+        List<DiscountDto> discountsDto = discountService.getBestDiscounts(LocalDate.now()).stream()
                 .map(discountDtoConverter::createFromEntity)
                 .toList();
         return new Result<>(true, HttpStatus.OK.value(), "Retrieved all discounted products based on the best " +
@@ -50,7 +49,8 @@ public class DiscountController {
     @GetMapping("/new")
     public Result<List<DiscountDto>> getNewDiscounts(@RequestParam(defaultValue = "1") int days) {
         LocalDate since = LocalDate.now().minusDays(days);
-        var discountsDto = discountService.getNewDiscounts(since).stream()
+
+        List<DiscountDto> discountsDto = discountService.getNewDiscounts(since).stream()
                 .map(discountDtoConverter::createFromEntity)
                 .toList();
         return new Result<>(true, HttpStatus.OK.value(), "Retrieved newly added discounts.", discountsDto);

@@ -8,15 +8,15 @@ public record DiscountDto(
         String productName,
         String brandName,
         String storeName,
+        BigDecimal discountPercentage,
+        LocalDate fromDate,
+        LocalDate toDate,
         BigDecimal originalPrice,
         BigDecimal packageQuantity,
         String unit,
         BigDecimal originalPricePerUnit,
         String standardUnit,
-        BigDecimal discountPercentage,
         BigDecimal discountedPrice,
-        BigDecimal discountedPricePerUnit,
-        LocalDate fromDate,
-        LocalDate toDate
+        BigDecimal discountedPricePerUnit
 ) {
 }

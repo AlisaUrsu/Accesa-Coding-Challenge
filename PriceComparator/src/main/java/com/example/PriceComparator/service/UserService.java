@@ -18,13 +18,13 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final StoreRepository storeRepository;
 
-    public void addUser(User user) {
+    public User addUser(User user) {
         User newUser = User.builder()
                 .username(user.getUsername())
                 .hashedPassword(passwordEncoder.encode(user.getHashedPassword()))
                 .email(user.getEmail())
                 .build();
-        userRepository.save(newUser);
+        return userRepository.save(newUser);
     }
 
     public User getUserById(Long id) {

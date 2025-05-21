@@ -1,6 +1,5 @@
 package com.example.PriceComparator.utils.converter;
 
-import com.example.PriceComparator.aop.FilterByStorePreferences;
 import com.example.PriceComparator.model.Discount;
 import com.example.PriceComparator.utils.dto.DiscountDto;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +20,19 @@ public class DiscountDtoConverter implements Converter<Discount, DiscountDto> {
         var unit = product.getPackageUnit();
 
         BigDecimal discountPercentage = entity.getPercentage();
-        BigDecimal originalPrice = storeProduct.getPrice();
-        BigDecimal discountedPrice = originalPrice
-                .subtract(originalPrice.multiply(discountPercentage).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP));
+        BigDecimal basePrice = storeProduct.getPrice();
 
-        BigDecimal originalPricePerUnit = storeProduct.getPricePerUnit();
-        BigDecimal discountedPricePerUnit = originalPricePerUnit != null
-                ? originalPricePerUnit
-                .subtract(originalPricePerUnit.multiply(discountPercentage).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP))
+        // Logic: discountedPrice = basePrice * (1 - (percentage / 100))
+        BigDecimal discountedPrice = basePrice.multiply(
+                BigDecimal.ONE.subtract(discountPercentage.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)));
+
+
+        BigDecimal basePricePerUnit = storeProduct.getPricePerUnit();
+
+        // Logic: discountedPricePerUnit = basePricePerUnit * (1 - (percentage / 100))
+        BigDecimal discountedPricePerUnit = basePricePerUnit != null
+                ? basePricePerUnit.multiply(
+                        BigDecimal.ONE.subtract(discountPercentage.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)))
                 : null;
 
         return new DiscountDto(
@@ -36,16 +40,16 @@ public class DiscountDtoConverter implements Converter<Discount, DiscountDto> {
                 product.getName(),
                 product.getBrand().getName(),
                 store.getName(),
-                originalPrice,
+                discountPercentage,
+                entity.getFromDate(),
+                entity.getToDate(),
+                basePrice,
                 product.getPackageQuantity(),
                 unit.getName(),
-                originalPricePerUnit,
+                basePricePerUnit,
                 "RON/" + unit.getStandardUnit(),
-                discountPercentage,
                 discountedPrice,
-                discountedPricePerUnit,
-                entity.getFromDate(),
-                entity.getToDate()
+                discountedPricePerUnit
         );
     }
 

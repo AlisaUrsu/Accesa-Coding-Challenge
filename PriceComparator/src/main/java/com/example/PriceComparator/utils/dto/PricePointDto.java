@@ -3,7 +3,7 @@ package com.example.PriceComparator.utils.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record PriceEvolutionDto(
+public record PricePointDto(
         LocalDate date,
         BigDecimal price,
         BigDecimal pricePerUnit

@@ -1,0 +1,12 @@
+﻿product_id,product_name,brand,package_quantity,package_unit,product_category,from_date,to_date,percentage_of_discount
+P001,lapte zuzu,Zuzu,1,l,lactate,21-05-25,27-05-25,14
+P010,brânză telemea,Proxi,0.3,kg,lactate,20-05-25,27-05-25,10
+P007,ouă mărimea M,Din Ogradă,10,buc,ouă,21-05-25,24-05-25,20
+P020,spaghetti nr.5,Barilla,500,g,paste făinoase,22-05-25,27-05-25,18
+P030,ulei floarea-soarelui,Spornic,1,l,alimente de bază,23-05-25,30-05-25,16
+P039,detergent lichid,Dero,2.5,l,produse de menaj,20-05-25,25-05-25,22
+P045,hârtie igienică 3 straturi,Motto,10,role,produse de menaj,21-05-25,26-05-25,30
+P051,vin alb demisec,Cotnari,0.75,l,băuturi,20-05-25,24-05-25,20
+P059,morcovi,Generic,0.5,kg,legume și fructe,22-05-25,27-05-25,7
+P069,pastă de dinți,Colgate,100,ml,îngrijire personală,21-05-25,25-05-25,25
+P070,bere blondă,Ursus,0.5,l,băuturi,20-05-25,26-05-25,30

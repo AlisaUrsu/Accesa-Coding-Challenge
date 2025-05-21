@@ -1,19 +1,19 @@
 package com.example.PriceComparator.utils.converter;
 
 import com.example.PriceComparator.model.PriceHistory;
-import com.example.PriceComparator.utils.dto.PriceEvolutionDto;
+import com.example.PriceComparator.utils.dto.PricePointDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PriceEvolutionDtoConverter implements Converter<PriceHistory, PriceEvolutionDto> {
+public class PricePointDtoConverter implements Converter<PriceHistory, PricePointDto> {
     @Override
-    public PriceHistory createFromDto(PriceEvolutionDto dto) {
+    public PriceHistory createFromDto(PricePointDto dto) {
         return null;
     }
 
     @Override
-    public PriceEvolutionDto createFromEntity(PriceHistory entity) {
-        return new PriceEvolutionDto(
+    public PricePointDto createFromEntity(PriceHistory entity) {
+        return new PricePointDto(
                 entity.getDate(),
                 entity.getPrice(),
                 entity.getPricePerUnit()

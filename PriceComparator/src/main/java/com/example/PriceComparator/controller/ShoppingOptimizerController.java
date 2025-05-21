@@ -8,7 +8,7 @@ import com.example.PriceComparator.utils.Result;
 import com.example.PriceComparator.utils.converter.ShoppingListDtoConverter;
 import com.example.PriceComparator.utils.dto.BasketItemDto;
 import com.example.PriceComparator.utils.dto.ShoppingListDto;
-import com.example.PriceComparator.utils.dto.UnavailableResponseDto;
+import com.example.PriceComparator.utils.dto.ShoppingListInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/shopping")
+@RequestMapping("${api.endpoint.base-url}/shopping")
 @SecurityRequirement(name = "basicAuth")
 @Tag(name = "Shopping Optimizer")
 public class ShoppingOptimizerController {
@@ -38,7 +38,7 @@ public class ShoppingOptimizerController {
                     "for every store."
     )
     @PostMapping("/optimize")
-    public Result<UnavailableResponseDto> optimizeShopping(@RequestBody List<BasketItemDto> basket) {
+    public Result<ShoppingListInfoDto> optimizeShopping(@RequestBody List<BasketItemDto> basket) {
         User user = currentUserService.getCurrentUser();
         List<String> unavailable = new ArrayList<>();
         List<ShoppingList> lists = shoppingOptimizerService.generateOptimizedLists(user, basket, unavailable);
@@ -50,7 +50,7 @@ public class ShoppingOptimizerController {
                 ? "Optimized basket."
                 : "Optimized basket. Some products were not available in your preferred stores.";
 
-        UnavailableResponseDto responseDto = new UnavailableResponseDto(listDtos, unavailable);
+        ShoppingListInfoDto responseDto = new ShoppingListInfoDto(listDtos, unavailable);
 
         return new Result<>(true, HttpStatus.CREATED.value(), message, responseDto);
     }

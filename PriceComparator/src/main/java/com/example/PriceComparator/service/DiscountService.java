@@ -15,8 +15,8 @@ public class DiscountService {
     private final DiscountRepository discountRepository;
 
     @FilterByStorePreferences
-    public List<Discount> getBestDiscounts() {
-        return discountRepository.findTopByOrderByDiscountPercentageDesc();
+    public List<Discount> getBestDiscounts(LocalDate date) {
+        return discountRepository.findTopByOrderByDiscountPercentageDesc(date);
     }
 
     @FilterByStorePreferences

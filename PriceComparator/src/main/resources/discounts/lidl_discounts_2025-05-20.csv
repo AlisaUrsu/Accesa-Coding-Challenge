@@ -1,0 +1,9 @@
+﻿product_id,product_name,brand,package_quantity,package_unit,product_category,from_date,to_date,percentage_of_discount
+P001,lapte zuzu,Zuzu,1,l,lactate,20-05-25,26-05-25,15
+P008,brânză telemea,Pilos,0.3,kg,lactate,25-05-25,30-05-25,11
+P034,cafea măcinată,Davidoff,0.25,kg,cafea,21-05-25,28-05-25,25
+P028,ulei floarea-soarelui,Bunica,1,l,alimente de bază,20-05-25,25-05-25,13
+P037,detergent lichid,Persil,2.5,l,produse de menaj,22-05-25,25-05-25,27
+P052,ciocolată neagră 70%,Fin Carre,100,g,gustări,20-05-25,30-05-25,10
+P064,mălai extra,Pambac,1,kg,alimente de bază,22-05-25,28-05-25,5
+P065,file somon,Lidl,0.2,kg,pește,20-05-25,25-05-25,18

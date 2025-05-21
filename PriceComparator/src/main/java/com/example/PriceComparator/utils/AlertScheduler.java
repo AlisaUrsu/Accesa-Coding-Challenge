@@ -8,14 +8,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 @EnableScheduling
 public class AlertScheduler {
-
     private final PriceAlertService alertService;
 
     public AlertScheduler(PriceAlertService alertService) {
         this.alertService = alertService;
     }
 
-    @Scheduled(fixedRate = 50000)
+    @Scheduled(fixedRate = 5000)
     public void runAlertCheck() {
         alertService.checkAlert();
     }

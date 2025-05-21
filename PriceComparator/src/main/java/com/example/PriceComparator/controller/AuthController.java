@@ -1,29 +1,20 @@
 package com.example.PriceComparator.controller;
 
-import com.example.PriceComparator.config.SecurityUser;
-import com.example.PriceComparator.model.Store;
 import com.example.PriceComparator.model.User;
 import com.example.PriceComparator.service.CurrentUserService;
 import com.example.PriceComparator.service.UserService;
 import com.example.PriceComparator.utils.Result;
 import com.example.PriceComparator.utils.converter.RegistrationRequestConverter;
 import com.example.PriceComparator.utils.converter.UserDtoConverter;
-import com.example.PriceComparator.utils.dto.LoginRequest;
 import com.example.PriceComparator.utils.dto.RegistrationRequest;
 import com.example.PriceComparator.utils.dto.UserDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -41,10 +32,10 @@ public class AuthController {
             summary = "Allows users to create a new account"
     )
     @PostMapping("/register")
-    public Result<?> register(@RequestBody RegistrationRequest registrationRequest) {
-
-        this.userService.addUser(registrationRequestConverter.createFromDto(registrationRequest));
-        return new Result<>(true, HttpStatus.CREATED.value(), "User created successfully.", null);
+    public Result<UserDto> register(@RequestBody RegistrationRequest registrationRequest) {
+        User user = userService.addUser(registrationRequestConverter.createFromDto(registrationRequest));
+        UserDto userDto = userDtoConverter.createFromEntity(user);
+        return new Result<>(true, HttpStatus.CREATED.value(), "User created successfully.", userDto);
     }
 
 
@@ -54,9 +45,9 @@ public class AuthController {
     )
     @GetMapping("/users")
     public Result<UserDto> currentUser() {
-        var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        var user = userDtoConverter.createFromEntity(userService.getUserByUsername(username));
-        return new Result<>(true, HttpStatus.OK.value(), "Retrieved currently logged in user.", user);
+        User user = currentUserService.getCurrentUser();
+        UserDto userDto = userDtoConverter.createFromEntity(user);
+        return new Result<>(true, HttpStatus.OK.value(), "Retrieved currently logged in user.", userDto);
     }
 
     @Operation(

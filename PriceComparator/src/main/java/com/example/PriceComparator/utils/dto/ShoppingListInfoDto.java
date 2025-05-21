@@ -1,10 +1,8 @@
 package com.example.PriceComparator.utils.dto;
 
-import com.example.PriceComparator.model.ShoppingList;
-
 import java.util.List;
 
-public record UnavailableResponseDto(
+public record ShoppingListInfoDto(
         List<ShoppingListDto> shoppingLists,
         List<String> unavailable
 ) {

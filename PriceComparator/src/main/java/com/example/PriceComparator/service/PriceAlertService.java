@@ -21,7 +21,6 @@ public class PriceAlertService {
     private final StoreProductRepository storeProductRepository;
     private final DiscountRepository discountRepository;
 
-    @FilterByStorePreferences
     public void checkAlert() {
         List<PriceAlert> alerts = priceAlertRepository.findByTriggeredFalse();
 

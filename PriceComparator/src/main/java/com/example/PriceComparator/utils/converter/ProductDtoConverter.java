@@ -3,7 +3,7 @@ package com.example.PriceComparator.utils.converter;
 import com.example.PriceComparator.model.Discount;
 import com.example.PriceComparator.model.StoreProduct;
 import com.example.PriceComparator.repository.DiscountRepository;
-import com.example.PriceComparator.utils.dto.ProductPriceComparisonDto;
+import com.example.PriceComparator.utils.dto.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,13 +14,13 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ProductPriceComparisonDtoConverter implements Converter<StoreProduct, ProductPriceComparisonDto> {
+public class ProductDtoConverter implements Converter<StoreProduct, ProductDto> {
     private final DiscountRepository discountRepository;
     @Override
-    public ProductPriceComparisonDto createFromEntity(StoreProduct entity) {
+    public ProductDto createFromEntity(StoreProduct entity) {
         var product = entity.getProduct();
         var store = entity.getStore();
-        BigDecimal originalPrice = entity.getPrice();
+        BigDecimal basePrice = entity.getPrice();
         BigDecimal quantity = product.getPackageQuantity();
         var unit = product.getPackageUnit();
 
@@ -34,30 +34,32 @@ public class ProductPriceComparisonDtoConverter implements Converter<StoreProduc
                 .map(Discount::getPercentage)
                 .orElse(BigDecimal.ZERO);
 
-        BigDecimal discountedPrice = originalPrice;
+        BigDecimal discountedPrice = basePrice;
+
+        // Apply discount if greater than 0
         if (discountPercentage.compareTo(BigDecimal.ZERO) > 0) {
-            BigDecimal discountMultiplier = BigDecimal.ONE.subtract(
-                    discountPercentage.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP)
+
+            // Logic: discountedPrice = basePrice * (1 - (percentage / 100))
+            discountedPrice = basePrice.multiply(
+                    BigDecimal.ONE.subtract(discountPercentage.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP))
             );
-            discountedPrice = originalPrice.multiply(discountMultiplier)
-                    .setScale(2, RoundingMode.HALF_UP);
         }
 
-        // Price per unit
-        BigDecimal originalPricePerUnit = entity.getPricePerUnit();
-        BigDecimal discountedPricePerUnit;
-        if (quantity.compareTo(BigDecimal.ZERO) == 0) {
-            // handle gracefully, maybe log or return null / BigDecimal.ZERO
-            discountedPricePerUnit = discountedPrice.divide(quantity, 4, RoundingMode.HALF_UP);
-        }
-        discountedPricePerUnit = originalPricePerUnit;
+        // Compute price per unit
+        BigDecimal basePricePerUnit = entity.getPricePerUnit();
 
-        return new ProductPriceComparisonDto(
+        // Logic: discountedPricePerUnit = basePricePerUnit * (1 - (percentage / 100))
+        BigDecimal discountedPricePerUnit = basePricePerUnit != null
+                ? basePricePerUnit.multiply(
+                BigDecimal.ONE.subtract(discountPercentage.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)))
+                : null;
+
+        return new ProductDto(
                 store.getName(),
-                originalPrice,
+                basePrice,
                 quantity,
                 unit.getName(),
-                originalPricePerUnit,
+                basePricePerUnit,
                 "RON/" + unit.getStandardUnit(),
                 discountPercentage,
                 discountedPrice,
@@ -66,7 +68,7 @@ public class ProductPriceComparisonDtoConverter implements Converter<StoreProduc
     }
 
     @Override
-    public StoreProduct createFromDto(ProductPriceComparisonDto dto) {
+    public StoreProduct createFromDto(ProductDto dto) {
         return null;
     }
 }
