@@ -3,22 +3,36 @@ My solution for the coding challenge for Accesa Java Internship 2025
 ## Overview
 This projects implements the backend of a price comparison application. The main functionalities include comparing product prices across stores, highligthing the cheapest option based on unit price, optimizing shopping baskets and generating shopping lists specific to a store, displaying currently active discounts, tracking the evolution of prices of products found in each store, and allowing users to select preferred stores.
 ## Project Structure
+The application follows a layered architecture that separates concerns to ensure maintainability and clarity.
+
+- **aop** – store filtering via custom annotation
+- **config** – security and application configuration
+- **controller** – API endpoints
+- **converter** – entity to DTO and vice versa mapping
+- **dto** – data transfer objects
+- **exceptions** – custom exception handler
+- **model** – domain entities mapped by JPA to database tables
+- **repository** – data access layer
+- **service** – business logic layer
+- **util** – Result and AlertScheduler class
+
 ### Database Structure
 The database schema was designed with modularity and extensibility in mind to support a scalable backend, which can simplify future expansion, even if my current focus was on the main tasks.
+
 ![PriceComp](https://github.com/user-attachments/assets/b1d3cd04-6cca-4ac2-8ccf-88a872328c9e)
-Products and Discounts are parsed from the .csv files.
-- **Product**: keeps general information about a specific product, like id, name, package quantity and unit. The rest represent foreign keys to other tables.
-- **Brand**: stores an id and name. Every time a new brand is parsed in the file, it will be added in the table.
-- **Category**: stores an id and name. Every time a new category is parsed in the file, it will be added in the table.
+
+The `CsvImportService` handles importing product and discount data from CSV files and populates the database accordingly.
+- **Product**: keeps general information about a specific product, like id, name, package quantity and unit. The rest represent foreign keys to other tables, like Brand, Category and Store.
 - **Unit**: is used for computing the price per unit for an item by knowing the conversion factor for a certain unit. (e.g 1g = 0.001kg)
-- **Store**
+- **StoreProduct**: represents a m:n relationship between stores and products, because products can be found at multiple different stores, and they have different prices. Price per unit prices are also stored to highlight the best options later.
+- **PriceHistory**: tracks every price a product has ever had. No discounts are applied.
+- **Discount**: stores discounts for StoreProducts
+- **UserStorePreferrence**: implements a m:n relationship between users and their preferred stores, used for filtering search results and recommendations.
 ### The usage of AOP
-As an extra functionality, I thought about letting users select their favorite stores, because the way I thought this is that while users can compare prices online, they still have to go in person to stores, and probably some stores are too far away from them or they simply had a bad experience with that. 
+As an extra functionality, I thought about letting users select their favorite stores, to enhance user experience, since users might only want to see products or discounts from their favorite stores, either due to proximity or personal preference. For this, I used the concept of AOP, or aspect-oriented programming to add this filtering based on each user’s favorite stores. I created a custom aspect `StorePreferencesAspect` with an annotation `@FilterByStorePreferences` that separates this logic from the main code and marks service methods that return collections of products or discounts. This means that whenever a marked method executes, the aspect retrieves the current user’s store preferences and modifies the returned data by filtering out any entities not associated with those stores.
 
-For this implementation I used the concept of AOP, or aspect-oriented programming to add this filtering based on each user’s favorite stores. This means that whenever products or discounts are fetched, only the items from the user's selected stores will be displayed. I created a custom aspect `StorePreferencesAspect` with an annotation `@FilterByStorePreferences` that helps me separate this logic from the main code, and I used it on service methods that returned a collection containing products or discounts. 
-
-## Task Implementation
-For the main functionalities, I created some sequence diagrams to show the flow of data. I would say they are mostly accurate, but some small mistakes may appear.
+## Tasks Implementation
+For the main functionalities, I created some sequence diagrams to show the flow of data. While they represent the overall logic, there may be a few minor innacuracies. Also, please note that the reply arrows should be depicted using dashed lines to follow standard UML notation.
 ### Shopping Basket Optimization
 `http://localhost:8080/price-comparator/shopping/optimize`
 **Request Body: **
