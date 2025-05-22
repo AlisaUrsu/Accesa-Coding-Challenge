@@ -21,6 +21,45 @@ For this implementation I used the concept of AOP, or aspect-oriented programmin
 For the main functionalities, I created some sequence diagrams to show the flow of data. I would say they are mostly accurate, but some small mistakes may appear.
 ### Shopping Basket Optimization
 `http://localhost:8080/price-comparator/shopping/optimize`
+**Request Body: **
+```
+[
+  {
+    "productId": "string",
+    "quantity": 0
+  }
+]
+```
+The endpoint allows users to submit a list of desired products with quantities (the basket) and returns optimized shopping lists for each store, selecting the lowest prices for the requested products, including applying any active discounts. The service checks the user’s preferred stores and tries to find the cheapest option per product. The `@FilterByStorePreferences` annotation isn't used by the service method, but by the repository method that retrieves a product (the StorePreferencesAspect was mistakenly not included in the diagram), so if a product isn’t available in any of the user's preferred store, it is added to an “unavailable” list that will be displayed in the response to inform the user which items couldn’t be found. Then, the service method generates one shopping list per store with the selected products and their total prices, returning these lists wrapped in a DTO along with any unavailable product names. Example for response:
+```
+{
+  "shoppingLists": [
+    {
+      "storeName": "Lidl",
+      "listName": "Shopping List - Lidl | 2025-05-22",
+      "items": [
+        {
+          "productId": "P001",
+          "productName": "lapte zuzu",
+          "quantity": 2,
+          "finalPrice": 16.66
+        },
+        {
+          "productId": "P011",
+          "productName": "pâine albă",
+          "quantity": 3,
+          "finalPrice": 10.2
+        }
+      ],
+      "totalPrice": 26.86
+    }
+  ],
+  "unavailable": [
+    "cașcaval"
+  ]
+}
+```
+
 ![optimize](https://github.com/user-attachments/assets/18c244a9-85dd-4c92-95c8-651371834f35)
 
 ### Best Discounts
@@ -57,7 +96,7 @@ This endpoint returns a list of the newly appeared discounts that have become ac
 ### Price History For A Product
 `http://localhost:8080/price-comparator/price-trends/:productId`
 
-The endpoint returns the price evolution of a specific product across all stores. It retrieves every price a product has ever had (no discounts applied!) using the product ID and organizes it into a list of StoreProductHistoryDto objects, where each DTO represents a store and contains a history of price changes for the product over time. StoreProductHistoryDtoConverter groups the price history data by store and then by product, to help users visualize how the price of a product has changed in different stores. Example of a response:
+The endpoint returns the price evolution of a specific product across all stores. It retrieves every price a product has ever had (no discounts applied!) using the product ID and organizes it into a list of StoreProductHistoryDto objects, where each DTO represents a store and contains a history of price changes for the product over time. StoreProductHistoryDtoConverter groups the price history data by store and then by product, to help users visualize how the price of a product has changed in different stores. This functionality is not affected by the AOP. Example of a response:
 ```
 [
   {
@@ -93,10 +132,11 @@ The endpoint returns the price evolution of a specific product across all stores
 
 ### Price History For Every Product
 `http://localhost:8080/price-comparator/price-trends?storeName=&brandName=&categoryName=`
+
+This endpoint retrieves the price trends of all products, optionally filtered by store name, brand or category using query parameters. Results have the same format as the previous endpoint. This functionality is not affected by the AOP.
 ![productHistories](https://github.com/user-attachments/assets/e97a752a-3078-4d62-a619-7207922bd562)
 
 ### Product Substitutes & Recommendations
-
 #### Price comparison by product id
 `http://localhost:8080/price-comparator/products/compare/{productId}`
 
