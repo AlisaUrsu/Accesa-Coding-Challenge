@@ -50,7 +50,7 @@ This endpoint returns a list of the best currently active discounts, in descendi
 ### New Discounts
 `http://localhost:8080/price-comparator/discounts/new?days=`
 
-This endpoint returns a list of the newly appeared disscounts that have become active within the last `n` days, where `n` is specified via the days query parameter. This list is also filtered by user store preferences, meaning users won't see discounts from stores they haven't selected. The resulted list consists of DiscountDTOs, exactly like the result of the endpoint before.
+This endpoint returns a list of the newly appeared discounts that have become active within the last `n` days, where `n` is specified via the days query parameter. This list is also filtered by user store preferences, meaning users won't see discounts from stores they haven't selected. The resulted list consists of DiscountDTOs, exactly like the result of the endpoint before.
 
 ![new](https://github.com/user-attachments/assets/755233e7-4571-401a-94a9-50d8c50b877c)
 
@@ -63,6 +63,19 @@ This endpoint returns a list of the newly appeared disscounts that have become a
 ![productHistories](https://github.com/user-attachments/assets/e97a752a-3078-4d62-a619-7207922bd562)
 
 ### Product Substitutes & Recommendations
+
+#### Price comparison by product id
+`http://localhost:8080/price-comparator/products/compare/{productId}`
+
+This endpoint retrieves and compares the prices of a specific product across all available stores, based on user's preference. The response is a list of ProductDto objects, each representing the price of the product in different stores. Each ProductDto includes details about pricing such as the base price, discount percentage (if applicable), discounted price, and price per unit. The list is sorted by the discounted price per unit, to help users choose the best available option.
+![compare](https://github.com/user-attachments/assets/00c65d40-a633-4dbc-b6fd-f4330a012307)
+
+#### Price comparison by product name
+`http://localhost:8080/price-comparator/products/{productName}`
+
+This endpoint works in a similar manner, but based on the name of the product instead of its ID. It retrieves all products with the matching name, even those with different quantities, across all preferred stores of users and returns a list of ProductDtos with the same pricing and discount structure. Like before, the list is sorted by discounted price per unit to highlight the best deal.
+![compareName](https://github.com/user-attachments/assets/86ce8ca3-90f5-4494-8c6e-307e58b9b410)
+
 
 ### Custom Price Alert
 `http://localhost:8080/price-comparator/alerts`
