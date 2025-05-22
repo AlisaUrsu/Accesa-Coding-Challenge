@@ -25,10 +25,33 @@ For the main functionalities, I created some sequence diagrams to show the flow 
 
 ### Best Discounts
 `http://localhost:8080/price-comparator/discounts/best`
+
+This endpoint returns a list of the best currently active discounts, in descending order, from the highest discount percentage to the lowest. The list is filtered by user store preferences, meaning users won't see discounts from stores they haven't selected. The resulted list consists of DiscountDTOs, which includes details about the discounted product, the base price and price per unit, the discount percentage, and the discounted base price and price per unit. Example: 
+```
+{
+  "productId": "P045",
+  "productName": "hârtie igienică 3 straturi",
+  "brandName": "Motto",
+  "storeName": "Profi",
+  "discountPercentage": 30,
+  "fromDate": "2025-05-21",
+  "toDate": "2025-05-26",
+  "originalPrice": 18.5,
+  "packageQuantity": 10,
+  "unit": "role",
+  "originalPricePerUnit": 1.85,
+  "standardUnit": "RON/rola",
+  "discountedPrice": 12.95,
+  "discountedPricePerUnit": 1.295
+}
+```
 ![best](https://github.com/user-attachments/assets/52ff7623-5774-4add-a498-6ea288438099)
 
 ### New Discounts
 `http://localhost:8080/price-comparator/discounts/new?days=`
+
+This endpoint returns a list of the newly appeared disscounts that have become active within the last `n` days, where `n` is specified via the days query parameter. This list is also filtered by user store preferences, meaning users won't see discounts from stores they haven't selected. The resulted list consists of DiscountDTOs, exactly like the result of the endpoint before.
+
 ![new](https://github.com/user-attachments/assets/755233e7-4571-401a-94a9-50d8c50b877c)
 
 ### Price History For A Product
