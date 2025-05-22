@@ -27,4 +27,22 @@ For the main functionalities, I created some sequence diagrams to show the flow 
 `http://localhost:8080/price-comparator/discounts/best`
 ![best](https://github.com/user-attachments/assets/52ff7623-5774-4add-a498-6ea288438099)
 
+### New Discounts
+`http://localhost:8080/price-comparator/discounts/new?days=`
+![new](https://github.com/user-attachments/assets/755233e7-4571-401a-94a9-50d8c50b877c)
+
+### Price History For A Product
+`http://localhost:8080/price-comparator/price-trends/:productId`
+![productHistory](https://github.com/user-attachments/assets/c92b66e7-0f23-40d8-bb75-300611290db8)
+
+### Price History For Every Product
+`http://localhost:8080/price-comparator/price-trends?storeName=&brandName=&categoryName=`
+![productHistories](https://github.com/user-attachments/assets/e97a752a-3078-4d62-a619-7207922bd562)
+
+### Product Substitutes & Recommendations
+
+### Custom Price Alert
+`http://localhost:8080/price-comparator/alerts`
+![priceAlert](https://github.com/user-attachments/assets/41508f94-37e5-4aa2-9676-662d45db965b)
+
 
