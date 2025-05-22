@@ -1,9 +1,9 @@
-package com.example.PriceComparator.utils.converter;
+package com.example.PriceComparator.converter;
 
 import com.example.PriceComparator.model.Discount;
 import com.example.PriceComparator.model.StoreProduct;
 import com.example.PriceComparator.repository.DiscountRepository;
-import com.example.PriceComparator.utils.dto.ProductDto;
+import com.example.PriceComparator.dto.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,6 @@ public class ProductDtoConverter implements Converter<StoreProduct, ProductDto> 
         BigDecimal quantity = product.getPackageQuantity();
         var unit = product.getPackageUnit();
 
-        LocalDate today = LocalDate.now();
 
         // Find current discount if any
         Optional<Discount> optionalDiscount = discountRepository

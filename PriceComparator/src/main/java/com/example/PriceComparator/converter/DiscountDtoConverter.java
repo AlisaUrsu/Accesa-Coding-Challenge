@@ -1,7 +1,7 @@
-package com.example.PriceComparator.utils.converter;
+package com.example.PriceComparator.converter;
 
 import com.example.PriceComparator.model.Discount;
-import com.example.PriceComparator.utils.dto.DiscountDto;
+import com.example.PriceComparator.dto.DiscountDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

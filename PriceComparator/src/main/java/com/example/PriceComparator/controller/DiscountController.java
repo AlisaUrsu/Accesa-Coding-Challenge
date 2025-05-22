@@ -2,8 +2,8 @@ package com.example.PriceComparator.controller;
 
 import com.example.PriceComparator.service.DiscountService;
 import com.example.PriceComparator.utils.Result;
-import com.example.PriceComparator.utils.converter.DiscountDtoConverter;
-import com.example.PriceComparator.utils.dto.DiscountDto;
+import com.example.PriceComparator.converter.DiscountDtoConverter;
+import com.example.PriceComparator.dto.DiscountDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

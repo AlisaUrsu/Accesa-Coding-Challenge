@@ -1,4 +1,4 @@
-package com.example.PriceComparator.utils.dto;
+package com.example.PriceComparator.dto;
 
 import java.util.List;
 

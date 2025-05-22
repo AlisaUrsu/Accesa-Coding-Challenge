@@ -1,8 +1,8 @@
-package com.example.PriceComparator.utils.converter;
+package com.example.PriceComparator.converter;
 
 import com.example.PriceComparator.model.Store;
 import com.example.PriceComparator.model.User;
-import com.example.PriceComparator.utils.dto.UserDto;
+import com.example.PriceComparator.dto.UserDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

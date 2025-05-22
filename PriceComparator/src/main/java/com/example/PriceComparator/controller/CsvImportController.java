@@ -2,6 +2,7 @@ package com.example.PriceComparator.controller;
 
 import com.example.PriceComparator.service.CsvImportService;
 import com.example.PriceComparator.utils.Result;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,10 @@ import java.time.LocalDate;
 public class CsvImportController {
     private final CsvImportService csvImportService;
 
+    @Operation(
+            description = "Populate database based on .csv files",
+            summary = "Populates the database with tables based on every .csv file."
+    )
     @PostMapping
     public Result<?> populateDatabase() throws IOException {
 

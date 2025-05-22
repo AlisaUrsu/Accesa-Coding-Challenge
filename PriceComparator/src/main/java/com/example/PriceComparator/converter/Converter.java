@@ -1,4 +1,4 @@
-package com.example.PriceComparator.utils.converter;
+package com.example.PriceComparator.converter;
 
 import org.springframework.stereotype.Component;
 import java.util.Collection;

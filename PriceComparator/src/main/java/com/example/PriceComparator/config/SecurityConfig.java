@@ -1,6 +1,7 @@
 package com.example.PriceComparator.config;
 
 
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,13 +28,8 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
+@NoArgsConstructor
 public class SecurityConfig {
-    private final CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint;
-
-    public SecurityConfig(CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint) {
-        this.customBasicAuthenticationEntryPoint = customBasicAuthenticationEntryPoint;
-    }
-
     @Value("${api.endpoint.base-url}")
     private String baseUrl;
 
@@ -55,20 +51,21 @@ public class SecurityConfig {
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(this.baseUrl+"/auth/register",
-                            this.baseUrl+"/auth/login",
+                    .requestMatchers(
+                            this.baseUrl+"/auth/register",
+                            this.baseUrl+"/auth/preferred-stores",
+                            this.baseUrl+"/csv-import",
                             "/swagger-ui/**",
                             this.baseUrl+"/auth/**",
                             "/v3/api-docs/**" // Allow Swagger UI and OpenAPI docs
                             //,"/api/**" // Allow other API endpoints
                     ).permitAll()
-                    //.anyRequest().authenticated()
-                    .anyRequest().permitAll() // Allow all other requests (disable security entirely for testing)
+                    .anyRequest().authenticated()
+                    //.anyRequest().permitAll() // Allow all other requests (disable security entirely for testing)
                 )
+                .httpBasic(Customizer.withDefaults())
                 .headers(headers -> headers.frameOptions(Customizer.withDefaults()).disable())
                 .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(httpBasic -> httpBasic
-                        .authenticationEntryPoint(this.customBasicAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }

@@ -1,24 +1,24 @@
-package com.example.PriceComparator.utils.converter;
+package com.example.PriceComparator.converter;
 
+import com.example.PriceComparator.model.Store;
 import com.example.PriceComparator.model.User;
 import com.example.PriceComparator.repository.StoreRepository;
-import com.example.PriceComparator.utils.dto.RegistrationRequest;
+import com.example.PriceComparator.dto.RegistrationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
 public class RegistrationRequestConverter implements Converter<User, RegistrationRequest> {
-    private final StoreRepository storeRepository;
     @Override
     public User createFromDto(RegistrationRequest dto) {
         return User.builder()
                 .username(dto.username())
                 .hashedPassword(dto.password())
                 .email(dto.email())
-                .preferredStores(new HashSet<>(storeRepository.findAll()))
                 .build();
     }
 

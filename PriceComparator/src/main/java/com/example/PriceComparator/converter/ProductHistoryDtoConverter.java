@@ -1,9 +1,9 @@
-package com.example.PriceComparator.utils.converter;
+package com.example.PriceComparator.converter;
 
 import com.example.PriceComparator.model.PriceHistory;
 import com.example.PriceComparator.model.Product;
-import com.example.PriceComparator.utils.dto.PricePointDto;
-import com.example.PriceComparator.utils.dto.ProductHistoryDto;
+import com.example.PriceComparator.dto.PricePointDto;
+import com.example.PriceComparator.dto.ProductHistoryDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

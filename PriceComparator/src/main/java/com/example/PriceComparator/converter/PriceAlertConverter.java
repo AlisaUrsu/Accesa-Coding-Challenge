@@ -1,8 +1,8 @@
-package com.example.PriceComparator.utils.converter;
+package com.example.PriceComparator.converter;
 
 import com.example.PriceComparator.model.PriceAlert;
 import com.example.PriceComparator.service.ProductService;
-import com.example.PriceComparator.utils.dto.PriceAlertRequest;
+import com.example.PriceComparator.dto.PriceAlertRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

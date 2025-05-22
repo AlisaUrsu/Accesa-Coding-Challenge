@@ -1,9 +1,8 @@
 package com.example.PriceComparator.service;
 
-import com.example.PriceComparator.aop.FilterByStorePreferences;
 import com.example.PriceComparator.model.*;
 import com.example.PriceComparator.repository.*;
-import com.example.PriceComparator.utils.dto.BasketItemDto;
+import com.example.PriceComparator.dto.BasketItemDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

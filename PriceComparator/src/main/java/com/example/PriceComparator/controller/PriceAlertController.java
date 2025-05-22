@@ -5,9 +5,10 @@ import com.example.PriceComparator.model.User;
 import com.example.PriceComparator.service.CurrentUserService;
 import com.example.PriceComparator.service.PriceAlertService;
 import com.example.PriceComparator.utils.Result;
-import com.example.PriceComparator.utils.converter.PriceAlertConverter;
-import com.example.PriceComparator.utils.dto.PriceAlertRequest;
+import com.example.PriceComparator.converter.PriceAlertConverter;
+import com.example.PriceComparator.dto.PriceAlertRequest;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.endpoint.base-url}/alerts")
+@SecurityRequirement(name = "basicAuth")
 @Tag(name = "Price Alerts")
 public class PriceAlertController {
     private final PriceAlertService priceAlertService;

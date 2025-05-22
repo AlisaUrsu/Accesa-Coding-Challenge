@@ -1,12 +1,11 @@
-package com.example.PriceComparator.utils.converter;
+package com.example.PriceComparator.converter;
 
 import com.example.PriceComparator.model.ShoppingList;
-import com.example.PriceComparator.utils.dto.ShoppingListDto;
-import com.example.PriceComparator.utils.dto.ShoppingListItemDto;
+import com.example.PriceComparator.dto.ShoppingListDto;
+import com.example.PriceComparator.dto.ShoppingListItemDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ShoppingListDtoConverter implements Converter<ShoppingList, ShoppingListDto> {

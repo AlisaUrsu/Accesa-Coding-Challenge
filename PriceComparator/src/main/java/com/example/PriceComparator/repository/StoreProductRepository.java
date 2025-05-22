@@ -15,12 +15,12 @@ import java.util.Optional;
 @Hidden
 public interface StoreProductRepository extends JpaRepository<StoreProduct, StoreProductKey> {
     Optional<StoreProduct> findByStoreAndProduct(Store store, Product product);
+
     @FilterByStorePreferences
     List<StoreProduct> findByProduct(Product product);
 
-    //@FilterByStorePreferences
-    List<StoreProduct> findByProductOrderByPricePerUnit(Product product);
-    @FilterByStorePreferences
-    @Query("SELECT s FROM StoreProduct s WHERE s.product.name = :productName ORDER BY s.pricePerUnit")
-    List<StoreProduct> findTheBestByPricePerUnit(@Param("productName") String productName);
+    List<StoreProduct> findByProductName(String productName);
+
+    List<StoreProduct> findByProductId(String productId);
+
 }

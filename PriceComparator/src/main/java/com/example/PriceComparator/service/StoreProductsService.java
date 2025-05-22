@@ -15,13 +15,12 @@ public class StoreProductsService {
     private final StoreProductRepository storeProductRepository;
 
     @FilterByStorePreferences
-    public List<StoreProduct> getStoreProductsByProduct(Product product){
-        return  storeProductRepository.findByProductOrderByPricePerUnit(
-                product);
+    public List<StoreProduct> getStoreProductsByProductId(String productId){
+        return storeProductRepository.findByProductId(productId);
     }
 
     @FilterByStorePreferences
-    public List<StoreProduct> getBestByPricePerUnit(String productName) {
-        return storeProductRepository.findTheBestByPricePerUnit(productName);
+    public List<StoreProduct> getStoreProductsByProductName(String productName) {
+        return storeProductRepository.findByProductName(productName);
     }
 }

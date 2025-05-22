@@ -1,5 +1,6 @@
 package com.example.PriceComparator.service;
 
+import com.example.PriceComparator.exceptions.UsernameAlreadyExistsException;
 import com.example.PriceComparator.model.Store;
 import com.example.PriceComparator.model.User;
 import com.example.PriceComparator.repository.StoreRepository;
@@ -19,10 +20,15 @@ public class UserService {
     private final StoreRepository storeRepository;
 
     public User addUser(User user) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new UsernameAlreadyExistsException(user.getUsername());
+        }
+        Set<Store> stores = new HashSet<>(storeRepository.findAll());
         User newUser = User.builder()
                 .username(user.getUsername())
                 .hashedPassword(passwordEncoder.encode(user.getHashedPassword()))
                 .email(user.getEmail())
+                .preferredStores(stores)
                 .build();
         return userRepository.save(newUser);
     }
