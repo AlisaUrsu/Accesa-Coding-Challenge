@@ -17,3 +17,14 @@ As an extra functionality, I thought about letting users select their favorite s
 
 For this implementation I used the concept of AOP, or aspect-oriented programming to add this filtering based on each user’s favorite stores. This means that whenever products or discounts are fetched, only the items from the user's selected stores will be displayed. I created a custom aspect `StorePreferencesAspect` with an annotation `@FilterByStorePreferences` that helps me separate this logic from the main code, and I used it on service methods that returned a collection containing products or discounts. 
 
+## Task Implementation
+For the main functionalities, I created some sequence diagrams to show the flow of data. I would say they are mostly accurate, but some small mistakes may appear.
+### Shopping Basket Optimization
+`http://localhost:8080/price-comparator/shopping/optimize`
+![optimize](https://github.com/user-attachments/assets/18c244a9-85dd-4c92-95c8-651371834f35)
+
+### Best Discounts
+`http://localhost:8080/price-comparator/discounts/best`
+![best](https://github.com/user-attachments/assets/52ff7623-5774-4add-a498-6ea288438099)
+
+
