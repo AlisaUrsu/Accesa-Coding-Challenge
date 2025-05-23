@@ -3,7 +3,7 @@ My solution for the coding challenge for Accesa Java Internship 2025
 ## Overview
 This project implements the backend of a price comparison application. The main functionalities include comparing product prices across stores, highligthing the cheapest option based on unit price, optimizing shopping baskets and generating shopping lists specific to a store, displaying currently active discounts, tracking the evolution of prices of products found in each store, and allowing users to select preferred stores.
 
-The backend is built using Spring Boot (Java 17) and uses PostgreSQL as the database. The application also includes API documentation via Swagger, making it easy to explore the available endpoints.
+The backend is built using Spring Boot (Java 17) and uses PostgreSQL as the database. The application also includes API documentation via Swagger UI, making it easy to explore the available endpoints.
 
 ## Project Structure
 The application follows a layered architecture that separates concerns to ensure maintainability and clarity.
@@ -50,18 +50,19 @@ mvn clean install
 To run the application:
 `mvn spring-boot:run`
 
-This applicatiom uses PostgreSQL. Here is how to set it up:
+This applicatiom uses PostgreSQL. Here is how to set it up in psql (SQL Shell):
+
 ![db setup](https://github.com/user-attachments/assets/21190ea7-d10b-4fb6-b435-9e96b88c2876)
 `application.properties` already includes these credentials.
 
-After starting the application, Swagger can be accessed at `http://localhost:8080/swagger-ui.html`.
+After starting the application, Swagger UI can be accessed at `http://localhost:8080/swagger-ui.html`.
 
 ## Clarifications
 Before running the application, make sure to read this section.
 ### Initial Data Import
 After setting up and running the application for the first time, you must populate the database with initial product and discount data. To do this, call the endpoint `POST http://localhost:8080/price-comparator/csv-import`. This endpoint performs the following:
 - initializes unit conversions used to compute the price per unit
-- imports product information for multiple stores and dates from predefined CSV files
+- imports product information for multiple stores and dates from the sample CSV files
 - imports discount information associated with those products
 - populates 8 tables with the extracted data (brands, categories, discounts, price_history, prodcuts, store_products, stores and units)
 
