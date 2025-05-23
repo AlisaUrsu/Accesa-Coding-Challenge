@@ -1,7 +1,10 @@
 # Accesa Coding Challenge
 My solution for the coding challenge for Accesa Java Internship 2025
 ## Overview
-This projects implements the backend of a price comparison application. The main functionalities include comparing product prices across stores, highligthing the cheapest option based on unit price, optimizing shopping baskets and generating shopping lists specific to a store, displaying currently active discounts, tracking the evolution of prices of products found in each store, and allowing users to select preferred stores.
+This project implements the backend of a price comparison application. The main functionalities include comparing product prices across stores, highligthing the cheapest option based on unit price, optimizing shopping baskets and generating shopping lists specific to a store, displaying currently active discounts, tracking the evolution of prices of products found in each store, and allowing users to select preferred stores.
+
+The backend is built using Spring Boot (Java 17) and uses PostgreSQL as the database. The application also includes API documentation via Swagger, making it easy to explore the available endpoints.
+
 ## Project Structure
 The application follows a layered architecture that separates concerns to ensure maintainability and clarity.
 
@@ -17,19 +20,42 @@ The application follows a layered architecture that separates concerns to ensure
 - **util** – Result and AlertScheduler class
 
 ### Database Structure
-The database schema was designed with modularity and extensibility in mind to support a scalable backend, which can simplify future expansion, even if my current focus was on the main tasks.
+The database schema was designed with modularity and extensibility in mind to support a scalable backend, which can simplify future expansion, even though my current focus was on the main tasks.
 
 ![PriceComp](https://github.com/user-attachments/assets/b1d3cd04-6cca-4ac2-8ccf-88a872328c9e)
 
-The `CsvImportService` handles importing product and discount data from CSV files and populates the database accordingly.
-- **products**: keeps general information about a specific product, like id, name, package quantity and unit. The rest represent foreign keys to other tables, like Brand, Category and Store.
-- **units**: is used for computing the price per unit for an item by knowing the conversion factor for a certain unit. (e.g 1g = 0.001kg)
-- **store_products**: represents a m:n relationship between stores and products, because products can be found at multiple different stores, and they have different prices. Price per unit prices are also stored to highlight the best options later.
-- **price_history**: tracks every price a product has ever had. No discounts are applied.
-- **discounts**: stores discounts for StoreProducts
-- **user_store_preferrences**: implements a m:n relationship between users and their preferred stores, used for filtering search results and recommendations.
+The `CsvImportService` handles importing product and discount data from CSV files and populates the database accordingly. Some of the tables are:
+- **products:** keeps general information about a specific product, like id, name, package quantity and unit. The rest represent foreign keys to other tables, like brands, categories and stores.
+- **units:** is used for computing the price per unit for an item by knowing the conversion factor for a certain unit. (e.g 1g = 0.001kg)
+- **store_products:** represents a m:n relationship between stores and products, because products can be found at multiple different stores, and they have different prices. Price per unit prices are also stored to highlight the best options later.
+- **price_history:** tracks every price a product has ever had. No discounts are applied.
+- **discounts:** stores discounts for StoreProducts
+- **user_store_preferences:** implements a m:n relationship between users and their preferred stores, used for filtering search results and recommendations.
 ### The usage of AOP
-As an extra functionality, I thought about letting users select their favorite stores, to enhance user experience, since users might only want to see products or discounts from their favorite stores, either due to proximity or personal preference. For this, I used the concept of AOP, or aspect-oriented programming to add this filtering based on each user’s favorite stores. I created a custom aspect `StorePreferencesAspect` with an annotation `@FilterByStorePreferences` that separates this logic from the main code and marks service methods that return collections of products or discounts. This means that whenever a marked method executes, the aspect retrieves the current user’s store preferences and modifies the returned data by filtering out any entities not associated with those stores.
+As an extra functionality, I thought about letting users select their favorite stores, to enhance user experience, since users might only want to see products or discounts from their favorite stores, either due to proximity or personal preference. For this, I used the concept of AOP, or aspect-oriented programming, to add this filtering based on each user’s favorite stores. I created a custom aspect `StorePreferencesAspect` with an annotation `@FilterByStorePreferences` that separates this logic from the main code and marks service methods that return collections of products or discounts. This means that whenever a marked method executes, the aspect retrieves the current user’s store preferences and modifies the returned data by filtering out any entities not associated with those stores.
+
+## Building and running the application
+Requirements:
+- Java 17
+- Maven
+- PostgreSQL
+
+Clone the repository and build the application using Maven:
+```
+git clone https://github.com/AlisaUrsu/Accessa-Coding-Challenge.git
+cd PriceComparator
+mvn clean install
+```
+
+To run the application:
+`mvn spring-boot:run`
+
+This applicatiom uses PostgreSQL. Here is how to set it up:
+![db setup](https://github.com/user-attachments/assets/21190ea7-d10b-4fb6-b435-9e96b88c2876)
+`application.properties` already includes these credentials.
+
+After starting the application, Swagger can be accessed at `http://localhost:8080/swagger-ui.html`.
+
 ## Clarifications
 Before running the application, make sure to read this section.
 ### Initial Data Import
@@ -39,11 +65,11 @@ After setting up and running the application for the first time, you must popula
 - imports discount information associated with those products
 - populates 8 tables with the extracted data (brands, categories, discounts, price_history, prodcuts, store_products, stores and units)
 
-### User Registration And Preferrences
+### User Registration And Preferences
 This application includes a simple user registration system to simulate the experience of an average user interacting with the application.
 The endpoint `POST http://localhost:8080/price-comparator/auth/register` creates a new user with a provided username, email and password. The username must be unique. Since the main focus was not on implementing a complete or secure authentication system, I did not use JWT or anything token related. Instead, the registered credentials (username and password) are used for Basic Authentication when accessing other secured endpoints.
 
-**Request body  for this endpoint:**
+**Request body for this endpoint:**
 ```
 {
   "username": "string",
@@ -51,8 +77,13 @@ The endpoint `POST http://localhost:8080/price-comparator/auth/register` creates
   "password": "string"
 }
 ```
+After registering, please use the `Authorize` button in Swagger to be considered as logged in.
 
-The endpoint `POST http://localhost:8080/price-comparator/auth/preferred-stores` allows the currently logged in user to update their list of preferred stores. When a user is first created, they are automatically associated with all available stores by default. This endpoint enables them to customize their store preferences afterward. The request body consists of a list of selected IDs.
+![image](https://github.com/user-attachments/assets/22eb18ec-54c5-44c4-a026-d65f17596011)
+
+
+The endpoint `POST http://localhost:8080/price-comparator/auth/preferred-stores` allows the currently logged in user to update their list of preferred stores. When a user is first created, they are associated with all available stores by default. This endpoint enables them to customize their store preferences afterward. The request body consists of a list of selected store IDs.
+
 **Request body:**
 ```
 [
@@ -63,7 +94,8 @@ The endpoint `POST http://localhost:8080/price-comparator/auth/preferred-stores`
 For the main functionalities, I created some sequence diagrams to show the flow of data. While they represent the overall logic, there may be a few minor innacuracies. Also, please note that the reply arrows should be depicted using dashed lines to follow standard UML notation.
 ### Shopping Basket Optimization
 `POST http://localhost:8080/price-comparator/shopping/optimize`
-**Request Body: **
+
+**Request Body:**
 ```
 [
   {
@@ -101,7 +133,6 @@ The endpoint allows users to submit a list of desired products with quantities (
   ]
 }
 ```
-
 ![optimize](https://github.com/user-attachments/assets/18c244a9-85dd-4c92-95c8-651371834f35)
 
 ### Best Discounts
@@ -176,6 +207,7 @@ The endpoint returns the price evolution of a specific product across all stores
 `GET http://localhost:8080/price-comparator/price-trends?storeName=&brandName=&categoryName=`
 
 This endpoint retrieves the price trends of all products, optionally filtered by store name, brand or category using query parameters. Results have the same format as the previous endpoint. This functionality is not affected by the AOP.
+
 ![productHistories](https://github.com/user-attachments/assets/e97a752a-3078-4d62-a619-7207922bd562)
 
 ### Product Substitutes & Recommendations
@@ -203,6 +235,7 @@ This endpoint retrieves and compares the prices of a specific product across all
 `GET http://localhost:8080/price-comparator/products/{productName}`
 
 This endpoint works in a similar manner, but based on the name of the product instead of its ID. It retrieves all products with the matching name, even those with different quantities, across all preferred stores of users and returns a list of ProductDtos with the same pricing and discount structure. Like before, the list is sorted by discounted price per unit to highlight the best deal.
+
 ![compareName](https://github.com/user-attachments/assets/86ce8ca3-90f5-4494-8c6e-307e58b9b410)
 
 The logic used here can be extended to brand-based or category-based comparisons.
@@ -217,7 +250,7 @@ The logic used here can be extended to brand-based or category-based comparisons
   "targetPrice": 0
 }
 ```
-This endpoint lets users create price alerts by setting a target price for a product. The system saves the alert linked to the user and checks daily for changes in store prices, including discounts. When the price of a product drops below the target, the alert is marked triggered and the user is notified. The result returns only a message confirming the creation of the alert. This feature helps users automatically track price drops and get notified without minimal effort.
+This endpoint lets users create price alerts by setting a target price for a product. The system saves the alert linked to the user and checks daily for changes in store prices, including discounts. When the price of a product drops below the target, the alert is marked triggered and the user is notified. The result returns only a message confirming the creation of the alert. This feature helps users automatically track price drops and get notified with minimal effort.
 
 ![priceAlert](https://github.com/user-attachments/assets/41508f94-37e5-4aa2-9676-662d45db965b)
 
