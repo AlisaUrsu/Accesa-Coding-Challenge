@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class AlertScheduler {
     private final PriceAlertService alertService;
 
-    @Scheduled(fixedRate = 5 * 1000)
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void runAlertCheck() {
         alertService.checkAlert();
     }
