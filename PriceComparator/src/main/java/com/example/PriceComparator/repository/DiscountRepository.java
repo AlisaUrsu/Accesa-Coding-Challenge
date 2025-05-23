@@ -26,7 +26,7 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
     """)
     List<Discount> findTopByOrderByDiscountPercentageDesc(@Param("date") LocalDate date);
 
-    List<Discount> findByFromDateAfter(LocalDate date);
+    List<Discount> findByFromDate(LocalDate date);
 
     @Query("""
         SELECT d FROM Discount d

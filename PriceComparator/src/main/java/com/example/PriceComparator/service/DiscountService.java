@@ -20,5 +20,5 @@ public class DiscountService {
     }
 
     @FilterByStorePreferences
-    public List<Discount> getNewDiscounts(LocalDate date) {return discountRepository.findByFromDateAfter(date); }
+    public List<Discount> getNewDiscounts(LocalDate date) {return discountRepository.findByFromDate(date); }
 }

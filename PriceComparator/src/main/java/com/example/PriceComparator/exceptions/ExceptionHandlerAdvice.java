@@ -74,13 +74,12 @@ public class ExceptionHandlerAdvice {
     Result<String> handleCredentialsExpiredException(CredentialsExpiredException ex) {
         return new Result<>(false, HttpStatus.UNAUTHORIZED.value(), "This API endpoint is not found.", ex.getMessage());
     }
-    
+
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     Result<String> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
         return new Result<>(false, HttpStatus.CONFLICT.value(), "Username is already taken", ex.getMessage());
     }
-
 
     /**
      * Fallback handles any unhandled exceptions.
